@@ -1,0 +1,14 @@
+{
+  "name": "knowpatch-marketplace",
+  "owner": { "name": "taehoon" },
+  "metadata": {
+    "description": "LLM knowledge cutoff corrections for Claude Code",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "knowpatch",
+      "source": "./"
+    }
+  ]
+}

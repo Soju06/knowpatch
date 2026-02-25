@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  typecheck:
+    name: Type check (tsc)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with: { bun-version: "1.3.7" }
+      - run: bun install --frozen-lockfile
+      - run: tsc --noEmit
+
+  test:
+    name: Tests (bun test)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with: { bun-version: "1.3.7" }
+      - run: bun install --frozen-lockfile
+      - run: bun test
+
+  build:
+    name: Build (bun build)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with: { bun-version: "1.3.7" }
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+
+  package:
+    name: Package (npm pack)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with: { bun-version: "1.3.7" }
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - run: npm pack
+      - name: Verify tarball contents
+        shell: bash
+        run: |
+          set -euo pipefail
+          TARBALL=$(ls knowpatch-*.tgz)
+          CONTENTS=$(tar tzf "${TARBALL}")
+          echo "${CONTENTS}" | grep -q "package/bin/cli.js"    || { echo "FAIL: bin/cli.js missing"; exit 1; }
+          echo "${CONTENTS}" | grep -q "package/bin/detect.js" || { echo "FAIL: bin/detect.js missing"; exit 1; }
+          echo "${CONTENTS}" | grep -q "package/skills/"       || { echo "FAIL: skills/ missing"; exit 1; }
+          echo "Package contents verified"

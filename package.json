@@ -1,0 +1,36 @@
+{
+  "name": "knowpatch",
+  "version": "0.1.0",
+  "description": "LLM knowledge cutoff compensator for Claude Code. Corrects outdated versions, deprecated APIs, renamed packages.",
+  "type": "module",
+  "bin": {
+    "knowpatch": "./bin/cli.js"
+  },
+  "scripts": {
+    "build": "bun build src/cli.ts --outdir bin --target node --format esm && bun build src/hooks/detect.ts --outdir bin --target node --format esm",
+    "dev": "bun run src/cli.ts",
+    "test": "bun test"
+  },
+  "files": [
+    "bin/",
+    "skills/"
+  ],
+  "keywords": [
+    "claude-code",
+    "skill",
+    "version",
+    "llm",
+    "knowledge-cutoff"
+  ],
+  "dependencies": {
+    "@inquirer/prompts": "^8.3.0",
+    "chalk": "^5.6.2",
+    "commander": "^14.0.3",
+    "ora": "^9.3.0",
+    "yaml": "^2.8.2"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.0",
+    "bun-types": "^1.3.9"
+  }
+}
