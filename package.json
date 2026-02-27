@@ -4,7 +4,7 @@
   "description": "LLM knowledge cutoff compensator for Claude Code. Corrects outdated versions, deprecated APIs, renamed packages.",
   "type": "module",
   "bin": {
-    "knowpatch": "./bin/cli.js"
+    "knowpatch": "bin/cli.js"
   },
   "scripts": {
     "build": "bun build src/cli.ts --outdir bin --target node --format esm && bun build src/hooks/detect.ts --outdir bin --target node --format esm",
