@@ -1,6 +1,6 @@
 import { lstat, readlink } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
-import { isPlatformHookInstalled } from "./hooks.js";
+import { isPlatformHookInstalled, isPlatformHookUpToDate } from "./hooks.js";
 import {
   getAgentsSkillPath,
   getPlatformSkillPath,
@@ -22,6 +22,7 @@ export interface PlatformStatus {
   symlinkValid: boolean;
   implicitlyLinked: boolean;
   hookInstalled: boolean;
+  hookUpToDate: boolean;
 }
 
 export interface InstallationStatus {
@@ -85,6 +86,9 @@ export async function detectInstallation(
     }
 
     const hookInstalled = await isPlatformHookInstalled(platform, scope);
+    const hookUpToDate = hookInstalled
+      ? await isPlatformHookUpToDate(platform, scope)
+      : false;
 
     platforms.push({
       platform,
@@ -92,6 +96,7 @@ export async function detectInstallation(
       symlinkValid,
       implicitlyLinked,
       hookInstalled,
+      hookUpToDate,
     });
   }
 

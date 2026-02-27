@@ -8,8 +8,9 @@
  * is derived from correction files.
  */
 
-import { accessSync, readdirSync, readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 export interface CorrectionEntry {
   header: string;
@@ -73,21 +74,10 @@ export function buildMessage(
   ].join("\n");
 }
 
-/** Find the package root by walking up from this file */
-function findPackageRoot(): string {
-  let dir = dirname(new URL(import.meta.url).pathname);
-  while (true) {
-    try {
-      accessSync(resolve(dir, "package.json"));
-      return dir;
-    } catch {
-      const parent = dirname(dir);
-      if (parent === dir) {
-        throw new Error("Could not find knowpatch package root");
-      }
-      dir = parent;
-    }
-  }
+/** Resolve corrections directory relative to this script's location */
+function getCorrectionsDir(): string {
+  const scriptDir = dirname(fileURLToPath(import.meta.url));
+  return resolve(scriptDir, "..", "corrections");
 }
 
 /** Load all correction files, returning parsed tags and entries */
@@ -147,12 +137,7 @@ async function main() {
     return;
   }
 
-  let correctionsDir: string;
-  try {
-    correctionsDir = resolve(findPackageRoot(), "skills/knowpatch/corrections");
-  } catch {
-    return;
-  }
+  const correctionsDir = getCorrectionsDir();
 
   // Load corrections and derive keywords from tags
   const corrections = loadCorrections(correctionsDir);

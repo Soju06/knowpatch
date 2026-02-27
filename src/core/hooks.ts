@@ -60,9 +60,27 @@ export async function isPlatformHookInstalled(
   if (!settingsPath) return false;
 
   const settings = await readSettings(settingsPath);
-  const hookCmd = getHookCommand();
+  const hookCmd = getHookCommand(scope);
   const entries = settings.hooks?.UserPromptSubmit ?? [];
   return entries.some((m) => isOurHook(m, hookCmd));
+}
+
+/** Check if the installed hook command matches the expected command for this scope */
+export async function isPlatformHookUpToDate(
+  platform: PlatformConfig,
+  scope: Scope,
+): Promise<boolean> {
+  if (platform.hookType === "none") return true;
+  const settingsPath = getPlatformSettingsPath(platform, scope);
+  if (!settingsPath) return true;
+
+  const hookCmd = getHookCommand(scope);
+  const settings = await readSettings(settingsPath);
+  const entries = settings.hooks?.UserPromptSubmit ?? [];
+
+  return entries.some((m) =>
+    m.hooks.some((h) => h.type === "command" && h.command === hookCmd),
+  );
 }
 
 /** Add the knowpatch hook to a platform's settings.json */
@@ -74,7 +92,7 @@ export async function installPlatformHook(
   const settingsPath = getPlatformSettingsPath(platform, scope);
   if (!settingsPath) return false;
 
-  const hookCmd = getHookCommand();
+  const hookCmd = getHookCommand(scope);
   const settings = await readSettings(settingsPath);
 
   if (!settings.hooks) {
@@ -106,7 +124,7 @@ export async function uninstallPlatformHook(
   const settingsPath = getPlatformSettingsPath(platform, scope);
   if (!settingsPath) return false;
 
-  const hookCmd = getHookCommand();
+  const hookCmd = getHookCommand(scope);
   const settings = await readSettings(settingsPath);
   const hooks = settings.hooks;
   const entries = hooks?.UserPromptSubmit;
