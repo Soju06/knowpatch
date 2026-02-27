@@ -24,6 +24,10 @@
     "registry": "https://registry.npmjs.org",
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Soju06/knowpatch"
+  },
   "keywords": [
     "claude-code",
     "skill",
