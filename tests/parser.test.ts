@@ -1,5 +1,5 @@
-import { describe, test, expect } from "bun:test";
-import { parseFrontmatter, parseCorrectionFile } from "../src/core/parser.js";
+import { describe, expect, test } from "bun:test";
+import { parseCorrectionFile, parseFrontmatter } from "../src/core/parser.js";
 
 const sampleContent = `---
 ecosystem: test-ecosystem
@@ -27,10 +27,10 @@ describe("parseFrontmatter", () => {
     const { frontmatter, body } = parseFrontmatter(sampleContent);
 
     expect(frontmatter).not.toBeNull();
-    expect(frontmatter!.ecosystem).toBe("test-ecosystem");
-    expect(frontmatter!.description).toBe("Test corrections file");
-    expect(frontmatter!.tags).toEqual(["react", "typescript", "test"]);
-    expect(frontmatter!.last_updated).toBe("2026-02-24");
+    expect(frontmatter?.ecosystem).toBe("test-ecosystem");
+    expect(frontmatter?.description).toBe("Test corrections file");
+    expect(frontmatter?.tags).toEqual(["react", "typescript", "test"]);
+    expect(frontmatter?.last_updated).toBe("2026-02-24");
     expect(body).toContain("# Test Corrections");
   });
 

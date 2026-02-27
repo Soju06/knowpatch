@@ -1,6 +1,7 @@
-import { symlink, mkdir, rm, readlink, lstat } from "node:fs/promises";
+import { lstat, mkdir, readlink, rm, symlink } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { select } from "@inquirer/prompts";
+import { installHook, isHookInstalled } from "../core/hooks.js";
 import {
   getSkillSourcePath,
   getSkillTargetPath,
@@ -8,10 +9,9 @@ import {
   pathExists,
   type Scope,
 } from "../core/paths.js";
-import { installHook, isHookInstalled } from "../core/hooks.js";
 import { isInteractive } from "../ui/interactive.js";
+import { COLORS, ICONS } from "../ui/palette.js";
 import { startSpinner } from "../ui/spinner.js";
-import { ICONS, COLORS } from "../ui/palette.js";
 
 interface InstallOptions {
   scope?: string;
@@ -43,13 +43,17 @@ export async function installCommand(options: InstallOptions): Promise<void> {
 
   // Check source exists
   if (!(await pathExists(source))) {
-    console.log(`  ${ICONS.error} ${COLORS.error("Skill source not found at")} ${source}`);
+    console.log(
+      `  ${ICONS.error} ${COLORS.error("Skill source not found at")} ${source}`,
+    );
     process.exit(1);
   }
 
   // Check if already linked to us
   if (await isLinkedToUs(target)) {
-    console.log(`  ${ICONS.ok} ${COLORS.success("Already installed")} — symlink is correct.`);
+    console.log(
+      `  ${ICONS.ok} ${COLORS.success("Already installed")} — symlink is correct.`,
+    );
     return;
   }
 
@@ -71,7 +75,9 @@ export async function installCommand(options: InstallOptions): Promise<void> {
         console.log(
           `  ${ICONS.error} ${COLORS.error("Target is an existing directory (not a symlink).")}`,
         );
-        console.log(`  ${COLORS.dim("Back up or remove it manually before installing.")}`);
+        console.log(
+          `  ${COLORS.dim("Back up or remove it manually before installing.")}`,
+        );
         process.exit(1);
       }
     } catch {
@@ -89,7 +95,9 @@ export async function installCommand(options: InstallOptions): Promise<void> {
 
   // Install hook
   if (await isHookInstalled(scope)) {
-    console.log(`  ${ICONS.ok} ${COLORS.success("Hook already registered")} in settings.json`);
+    console.log(
+      `  ${ICONS.ok} ${COLORS.success("Hook already registered")} in settings.json`,
+    );
   } else {
     const hookSpinner = startSpinner("Registering UserPromptSubmit hook...");
     await installHook(scope);

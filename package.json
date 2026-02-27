@@ -9,7 +9,12 @@
   "scripts": {
     "build": "bun build src/cli.ts --outdir bin --target node --format esm && bun build src/hooks/detect.ts --outdir bin --target node --format esm",
     "dev": "bun run src/cli.ts",
-    "test": "bun test"
+    "test": "bun test",
+    "lint": "biome check src/ tests/",
+    "lint:fix": "biome check --fix src/ tests/",
+    "format": "biome format src/ tests/",
+    "format:fix": "biome format --fix src/ tests/",
+    "typecheck": "tsc --noEmit"
   },
   "files": [
     "bin/",
@@ -30,7 +35,9 @@
     "yaml": "^2.8.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.4",
     "@types/node": "^25.3.0",
-    "bun-types": "^1.3.9"
+    "bun-types": "^1.3.9",
+    "lefthook": "^2.1.1"
   }
 }

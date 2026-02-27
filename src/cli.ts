@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-import { Command } from "commander";
 import { select } from "@inquirer/prompts";
+import { Command } from "commander";
+import pkg from "../package.json";
 import { installCommand } from "./commands/install.js";
 import { uninstallCommand } from "./commands/uninstall.js";
 import { isInteractive } from "./ui/interactive.js";
 import { COLORS } from "./ui/palette.js";
-import pkg from "../package.json";
 
 const program = new Command();
 

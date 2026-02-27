@@ -1,26 +1,30 @@
 import { rm } from "node:fs/promises";
 import { confirm } from "@inquirer/prompts";
+import { uninstallHook } from "../core/hooks.js";
 import {
   getSkillTargetPath,
   isLinkedToUs,
   pathExists,
   type Scope,
 } from "../core/paths.js";
-import { uninstallHook } from "../core/hooks.js";
 import { isInteractive } from "../ui/interactive.js";
+import { COLORS, ICONS } from "../ui/palette.js";
 import { startSpinner } from "../ui/spinner.js";
-import { ICONS, COLORS } from "../ui/palette.js";
 
 interface UninstallOptions {
   scope?: string;
 }
 
-export async function uninstallCommand(options: UninstallOptions): Promise<void> {
+export async function uninstallCommand(
+  options: UninstallOptions,
+): Promise<void> {
   const scope: Scope = (options.scope as Scope) ?? "user";
   const target = getSkillTargetPath(scope);
 
   if (!(await pathExists(target))) {
-    console.log(`  ${ICONS.ok} ${COLORS.dim("Nothing to uninstall — symlink does not exist.")}`);
+    console.log(
+      `  ${ICONS.ok} ${COLORS.dim("Nothing to uninstall — symlink does not exist.")}`,
+    );
     return;
   }
 
@@ -28,7 +32,9 @@ export async function uninstallCommand(options: UninstallOptions): Promise<void>
     console.log(
       `  ${ICONS.error} ${COLORS.error("Target exists but does not point to this package.")}`,
     );
-    console.log(`  ${COLORS.dim("Refusing to remove — manual cleanup required.")}`);
+    console.log(
+      `  ${COLORS.dim("Refusing to remove — manual cleanup required.")}`,
+    );
     process.exit(1);
   }
 

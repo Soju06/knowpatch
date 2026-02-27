@@ -1,6 +1,6 @@
-import { resolve, dirname } from "node:path";
+import { lstat, readlink } from "node:fs/promises";
 import { homedir } from "node:os";
-import { readlink, lstat } from "node:fs/promises";
+import { dirname, resolve } from "node:path";
 
 export type Scope = "user" | "project";
 

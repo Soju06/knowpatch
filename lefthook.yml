@@ -1,0 +1,11 @@
+pre-commit:
+  parallel: false
+  commands:
+    lint:
+      glob: "*.{ts,tsx,js,jsx,json}"
+      run: bunx biome check --staged --no-errors-on-unmatched {staged_files}
+    format:
+      glob: "*.{ts,tsx,js,jsx,json,md,yaml,yml}"
+      run: bunx biome format --staged --no-errors-on-unmatched {staged_files}
+    typecheck:
+      run: tsc --noEmit

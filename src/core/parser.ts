@@ -22,7 +22,10 @@ interface Frontmatter {
 }
 
 /** Parse YAML frontmatter and markdown body from a corrections file */
-export function parseFrontmatter(content: string): { frontmatter: Frontmatter | null; body: string } {
+export function parseFrontmatter(content: string): {
+  frontmatter: Frontmatter | null;
+  body: string;
+} {
   const match = content.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
   if (!match) {
     return { frontmatter: null, body: content };
@@ -33,7 +36,10 @@ export function parseFrontmatter(content: string): { frontmatter: Frontmatter | 
 }
 
 /** Parse a single corrections file */
-export function parseCorrectionFile(filename: string, content: string): CorrectionFile {
+export function parseCorrectionFile(
+  filename: string,
+  content: string,
+): CorrectionFile {
   const { frontmatter, body } = parseFrontmatter(content);
 
   if (!frontmatter) {
@@ -79,6 +85,6 @@ export async function findByTags(tags: string[]): Promise<CorrectionFile[]> {
   const files = await parseAllCorrections();
   const lowerTags = tags.map((t) => t.toLowerCase());
   return files.filter((f) =>
-    f.tags.some((t) => lowerTags.includes(t.toLowerCase()))
+    f.tags.some((t) => lowerTags.includes(t.toLowerCase())),
   );
 }
