@@ -2,7 +2,7 @@
 ecosystem: cli-tools
 description: CLI tool renames, command changes, major versions
 tags: [shadcn, tailwind, eslint, create-react-app, vite, webpack, prettier, cli]
-version: "0.4.0" # x-release-please-version
+version: "0.4.1" # x-release-please-version
 last_updated: "2026-02-24"
 ---
 
