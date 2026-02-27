@@ -60,7 +60,9 @@ if (process.argv.length <= 2) {
   if (isInteractive()) {
     console.log();
     console.log(`  ${COLORS.title(`Knowpatch v${pkg.version}`)}`);
-    console.log(`  ${COLORS.dim("LLM knowledge cutoff compensator")}`);
+    console.log(
+      `  ${COLORS.dim("Corrects outdated APIs, renamed packages, and deprecated patterns for AI coding agents")}`,
+    );
 
     // Non-blocking update check
     const newer = await checkForUpdate(pkg.version);
