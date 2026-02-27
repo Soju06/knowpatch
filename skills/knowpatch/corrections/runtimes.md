@@ -3,12 +3,6 @@ ecosystem: runtimes
 description: Runtime version tracks, LTS status
 tags: [node, python, bun, deno, go, java, runtime]
 last_updated: "2026-02-24"
-entries:
-  - id: bun
-    package: "bun-types"
-    lookup: "npm view bun-types version"
-    cached_version: null
-    last_checked: "2026-02-24"
 ---
 
 # Runtimes — Version Corrections
@@ -50,7 +44,7 @@ entries:
 ### Bun — 2026-02
 - **Wrong (training data)**: Bun 1.0 was recently released
 - **Correct (current)**:
-  - Bun 1.3.x stable (npm view → 1.3.9)
+  - Bun 1.3.x stable
   - Node.js compatibility significantly improved
   - Built-in bundler, test runner, package manager
 - **Impact**: Low
@@ -59,7 +53,7 @@ entries:
 ### Deno — 2026-02
 - **Wrong (training data)**: Deno 1.x
 - **Correct (current)**:
-  - Deno 2.x (npm view → 2.6.8)
+  - Deno 2.x
   - npm compatibility greatly enhanced (`npm:` prefix for direct npm package usage)
   - `deno.json` config file
   - Node.js API compatibility layer improved

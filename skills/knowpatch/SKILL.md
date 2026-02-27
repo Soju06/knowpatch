@@ -1,11 +1,11 @@
 ---
 name: knowpatch
 description: >
-  LLM knowledge cutoff compensator — provides up-to-date corrections for breaking changes
-  and version drift that may differ from training data.
-  (1) Knowledge Corrections: renamed packages (shadcn-ui→shadcn), changed APIs (z.string().email()→z.email()),
-  new config formats (.eslintrc→eslint.config.js), current model IDs (Node 24 LTS, GPT-5.3, Opus 4.6);
-  (2) Live Lookup commands for verifying versions via package managers (npm view, pip index versions).
+  LLM knowledge cutoff compensator — provides knowledge corrections for breaking changes
+  and API drift that may differ from training data.
+  Corrections cover: renamed packages (shadcn-ui→shadcn), changed APIs (z.string().email()→z.email()),
+  new config formats (.eslintrc→eslint.config.js), current model IDs (Claude Opus 4.6, GPT-5.3).
+  Version numbers are NOT cached — always verify via package manager (npm view, pip index versions).
   Useful for tasks involving: install, add, create, init, scaffold, upgrade, migrate, latest, version,
   dependency, shadcn, tailwind, vite, zod, eslint, react, next, svelte, nuxt, django, fastapi, pydantic,
   ruff, uv, claude, gpt, gemini, openai, anthropic, model, llm, sdk, npm, pip, cargo, bun,
@@ -14,98 +14,77 @@ description: >
 
 # Knowpatch
 
-> This skill provides corrections for version-sensitive information that may have drifted since training data was collected.
+> Knowledge corrections for version-sensitive information that may have drifted since training data.
 
 ## Table of Contents
 
 1. [Purpose](#purpose)
-2. [Recommended Workflow](#recommended-workflow)
-3. [When This Skill Is Most Useful](#when-this-skill-is-most-useful)
-4. [Activation Protocol](#activation-protocol)
-5. [Live Lookup Commands](#live-lookup-commands)
-6. [When to Use Cached Knowledge](#when-to-use-cached-knowledge)
-7. [Failure Handling](#failure-handling)
-8. [Correction Entry Format](#correction-entry-format)
-9. [Update Workflow](#update-workflow)
+2. [Core Principle](#core-principle)
+3. [Activation Protocol](#activation-protocol)
+4. [Version Lookup Commands](#version-lookup-commands)
+5. [When Corrections Are Most Valuable](#when-corrections-are-most-valuable)
+6. [Failure Handling](#failure-handling)
+7. [Correction Format](#correction-format)
+8. [Maintenance](#maintenance)
 
 ---
 
 ## Purpose
 
-This skill addresses the gap between LLM training data and current reality for versioned information. It works through two mechanisms:
+This skill addresses the gap between LLM training data and current reality. It provides **knowledge corrections** — pre-loaded fixes for breaking changes, renamed packages, deprecated APIs, and removed CLI commands that training data gets wrong.
 
-1. **Knowledge Corrections** — Pre-loaded fixes for breaking changes, renamed packages, deprecated APIs, and removed CLI commands that training data may get wrong
-2. **Live Lookup Rules** — Package manager queries as the source of truth for version numbers
+Version numbers are **never stored** in corrections. Always verify versions via the package manager directly.
 
 ---
 
-## Recommended Workflow
+## Core Principle
 
-> Version numbers from training data may be outdated — verify before using.
+> **Corrections = knowledge. Versions = package manager.**
 
-To get accurate versions, you can:
-1. **Query the package manager directly** — `npm view`, `pip index versions`, etc.
-2. **Check corrections files** — Reference this skill's `corrections/` directory
+- Corrections tell you **what changed** (API renames, breaking changes, deprecated patterns)
+- Package managers tell you **what version** is current (`npm view`, `pip index versions`)
+- Never trust version numbers from training data or from corrections — always verify
 
 Common pitfalls to avoid:
 - Using version numbers recalled from training data without verification
-- Trusting version numbers from web search results (these can also be stale)
 - Claiming something is "the latest version" without checking
 - Writing dependency files (`package.json`, `pyproject.toml`) with unverified versions
 
 ---
 
-## When This Skill Is Most Useful
-
-This skill is particularly helpful in the following situations:
-
-### Check Corrections Files When:
-- User requests package installation or addition (`install`, `add`, `bun add`, etc.)
-- Creating a new project or scaffolding
-- User mentions "latest version" or "latest"
-- User specifies a version that needs validation
-- Upgrading or migrating dependencies
-- Writing dependency files (`pyproject.toml`, `package.json`, `requirements.txt`, `Cargo.toml`)
-- Referencing AI model names or IDs (Claude, GPT, Gemini)
-- Using CLI tools (shadcn, tailwind, eslint, vite, create-react-app)
-- Writing code that uses library APIs known to have breaking changes (Zod, React, Pydantic, etc.)
-
-### Run Live Lookup When:
-- Any version number is needed for code or configuration
-- Installing or adding any package
-- Writing or modifying dependency files
-- User asks about current/latest versions
-
----
-
 ## Activation Protocol
 
-When this skill activates, the following sequence is recommended:
-
-### Step 1: Scan corrections file frontmatter tags
+### Step 1: Scan correction file tags
 Scan YAML frontmatter `tags` in each corrections file to identify which are relevant to the current task.
 
-### Step 2: Read Relevant Corrections Files
-Read all matching corrections files based on frontmatter tag matches. Check for breaking changes, renamed packages, and deprecated APIs.
+### Step 2: Read relevant corrections
+Read matching corrections files. Check for breaking changes, renamed packages, deprecated APIs, and new patterns.
 
-### Step 3: Run Live Version Lookups
-If package versions are needed, query the package manager directly using the Live Lookup Commands below.
+### Step 3: Verify versions via package manager
+If package versions are needed, query the package manager directly using the commands below. Never use version numbers from memory.
 
 ---
 
-## Live Lookup Commands
+## Version Lookup Commands
 
-### Single Package Lookup
+### Single Package
 
 | Ecosystem | Command |
 |-----------|---------|
-| Python (PyPI) | `pip index versions {pkg} \| head -1` |
 | npm | `npm view {pkg} version` |
 | Bun | `bun pm info {pkg} version` |
+| Python (PyPI) | `pip index versions {pkg} \| head -1` |
 | Rust (crates.io) | `cargo search {pkg} --limit 1` |
 | Go | `go list -m -versions {module}@latest` |
 
 ### Batch Lookup (for project scaffolding)
+
+**npm batch:**
+```bash
+for pkg in react react-dom typescript tailwindcss vite; do
+  echo "$pkg|$(npm view "$pkg" version 2>/dev/null)"
+done
+```
 
 **Python batch:**
 ```bash
@@ -115,33 +94,26 @@ for pkg in fastapi pydantic sqlalchemy alembic uvicorn; do
 done
 ```
 
-**npm batch:**
-```bash
-for pkg in react react-dom typescript tailwindcss vite; do
-  echo "$pkg|$(npm view "$pkg" version 2>/dev/null)"
-done
-```
-
-### Lookup Priority
-
-1. `pip index versions` / `npm view` (primary)
-2. `uv pip compile` / `bun pm info` (fallback)
-3. Corrections files (when network is unavailable)
-4. Ask user for manual verification (when all else fails)
-
 ---
 
-## When to Use Cached Knowledge
+## When Corrections Are Most Valuable
 
-Corrections files are especially valuable in these cases (live lookup alone may not be enough):
+Corrections provide knowledge that **version numbers alone cannot reveal**:
 
 - **Package renames**: `shadcn-ui` → `shadcn` (querying old name may still return results)
 - **CLI command changes**: `npx shadcn-ui@latest` → `npx shadcn@latest`
 - **API breaking changes**: `z.string().email()` → `z.email()` (version number alone doesn't reveal this)
-- **AI model names**: Cannot be looked up via package managers — corrections are the source of truth
-- **Config file format changes**: `.eslintrc` → `eslint.config.js`
+- **Config format changes**: `.eslintrc` → `eslint.config.js`
+- **AI model IDs**: Cannot be looked up via package managers — corrections are the source of truth
+- **Platform API changes**: Supabase key renames, JWT verification pattern changes
 
-Even in these cases, verify version numbers via live lookup when possible.
+### Check Corrections When:
+- Installing or adding packages
+- Creating or scaffolding a new project
+- Writing code that uses library APIs known to have breaking changes
+- Referencing AI model names or IDs
+- Using CLI tools (shadcn, tailwind, eslint, vite)
+- Upgrading or migrating dependencies
 
 ---
 
@@ -149,18 +121,17 @@ Even in these cases, verify version numbers via live lookup when possible.
 
 | Situation | Action |
 |-----------|--------|
-| Command succeeds | Use the returned version |
-| Command fails (tool not installed) | Try fallback command |
-| All commands fail | Reference corrections files, state "as of {date}" |
-| Not in corrections either | Ask user for manual verification |
+| Lookup command succeeds | Use the returned version |
+| Lookup command fails (tool not installed) | Try fallback command from the table above |
+| All commands fail | State uncertainty clearly, ask user to verify |
 
 ---
 
-## Correction Entry Format
+## Correction Format
 
-All entries in corrections files follow this format:
+Each correction entry in `corrections/` files follows this format:
 
-```
+```markdown
 ### {Topic} — {YYYY-MM}
 - **Wrong (training data)**: {What the model would answer}
 - **Correct (current)**: {Actual current state}
@@ -170,7 +141,7 @@ All entries in corrections files follow this format:
 
 ---
 
-## Update Workflow
+## Maintenance
 
 ### Adding New Corrections
 1. Identify the relevant corrections file (scan frontmatter tags)

@@ -3,7 +3,6 @@ ecosystem: platforms
 description: BaaS/platform API key changes, auth patterns
 tags: [supabase, anon, service_role, publishable, secret, jwks, baas, firebase, platform]
 last_updated: "2026-02-25"
-entries: []
 ---
 
 # Platforms & BaaS — Version Corrections

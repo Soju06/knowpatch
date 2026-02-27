@@ -6,10 +6,7 @@ LLM knowledge cutoff compensator for Claude Code. Corrects outdated versions, de
 
 LLM training data lags 1-2 years behind reality. When Claude Code generates `package.json`, scaffolds a project, or suggests an install command, it confidently uses **outdated** version numbers and **deprecated** APIs.
 
-Knowpatch fixes this through two mechanisms:
-
-1. **Knowledge Corrections** — Pre-loaded fixes for breaking changes (`shadcn-ui` → `shadcn`, `z.string().email()` → `z.email()`, `.eslintrc` → `eslint.config.js`, etc.)
-2. **Live Lookup Rules** — Enforces package manager queries (`npm view`, `pip index versions`) as the single source of truth
+Knowpatch fixes this by providing **knowledge corrections** — pre-loaded fixes for breaking changes (`shadcn-ui` → `shadcn`, `z.string().email()` → `z.email()`, `.eslintrc` → `eslint.config.js`, etc.) while enforcing that version numbers are always verified via the package manager directly.
 
 ## Install
 
@@ -36,8 +33,6 @@ This creates a symlink so Claude Code automatically loads the skill.
 |---------|-------------|
 | `knowpatch install` | Install the skill by creating a symlink |
 | `knowpatch uninstall` | Remove the skill symlink |
-| `knowpatch check` | Validate corrections against live package data (OK / DRIFT / ERROR) |
-| `knowpatch update` | Run live lookups and update drifted entries |
 
 Running `knowpatch` with no arguments opens an interactive menu.
 

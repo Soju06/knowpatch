@@ -1,0 +1,95 @@
+{
+  "version": "1.0",
+  "description": "Skill activation triggers for knowpatch development",
+  "skills": {
+    "type-lint-check": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "critical",
+      "description": "tsc + bun test 품질 게이트",
+      "promptTriggers": {
+        "keywords": [
+          "type check",
+          "lint check",
+          "quality gate",
+          "타입 체크",
+          "린트",
+          "type-lint"
+        ],
+        "intentPatterns": [
+          "(type|lint|quality).*(check|gate|체크|게이트)",
+          "(implement|구현).*(done|완료).*(check|verify|확인)",
+          "(code|코드).*(complete|완료).*(next|다음)"
+        ]
+      }
+    },
+    "type-lint-guard": {
+      "type": "guardrail",
+      "enforcement": "block",
+      "priority": "critical",
+      "description": "코드 수정 후 tsc/bun test 미실행 시 스킬 파일 편집 차단",
+      "fileTriggers": {
+        "pathPatterns": ["**/skills/knowpatch/**"],
+        "pathExclusions": ["**/*.test.*"]
+      },
+      "skipConditions": {
+        "passStateFile": "type-lint-last-pass.json",
+        "sessionSkillUsed": true,
+        "envOverride": "SKIP_TYPE_LINT_GUARD"
+      },
+      "blockMessage": "BLOCKED: tsc --noEmit && bun test를 먼저 실행하세요.\n스킬 파일을 수정하려면 타입체크+테스트를 통과해야 합니다.\n\n긴급 시: SKIP_TYPE_LINT_GUARD=1 설정"
+    },
+    "correction-authoring": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "correction 작성/수정 시 skill-authoring 컨벤션 가이드 제안",
+      "promptTriggers": {
+        "keywords": [
+          "correction",
+          "커렉션",
+          "knowledge patch",
+          "add entry",
+          "엔트리 추가",
+          "버전 수정"
+        ],
+        "intentPatterns": [
+          "(add|create|write|추가|작성).*(correction|entry|엔트리|커렉션)",
+          "(update|fix|수정|갱신).*(correction|entry|version|버전)",
+          "(new|신규).*(ecosystem|생태계|correction)"
+        ]
+      }
+    },
+    "skill-authoring-guard": {
+      "type": "guardrail",
+      "enforcement": "remind",
+      "priority": "high",
+      "description": "skills/knowpatch/ 파일 편집 전 skill-authoring 컨벤션 확인 리마인드",
+      "fileTriggers": {
+        "pathPatterns": [
+          "**/skills/knowpatch/**/*.md",
+          "**/skills/knowpatch/SKILL.md"
+        ],
+        "pathExclusions": []
+      },
+      "skipConditions": {
+        "sessionSkillUsed": true,
+        "envOverride": "SKIP_SKILL_AUTHORING_GUARD"
+      },
+      "blockMessage": "BLOCKED: skill-authoring 컨벤션을 먼저 확인하세요.\n스킬/correction 파일 수정 전에 작성 원칙을 확인해야 합니다.\n\n→ .agents/conventions/skill-authoring.md 참조\n→ 우회: SKIP_SKILL_AUTHORING_GUARD=1"
+    }
+  },
+  "notes": {
+    "enforcement_types": {
+      "suggest": "Advisory — injects skill suggestion into Claude context (prompt-time only)",
+      "remind": "Session-scoped block — blocks file edits until skill is invoked once per session (exit 2)",
+      "block": "Hard block — prevents tool execution until pass state recorded (exit 2)"
+    },
+    "priority_levels": {
+      "critical": "Always triggers, shown first",
+      "high": "Triggers for most matches, recommended",
+      "medium": "Triggers on strong match, suggested",
+      "low": "Optional, shown last"
+    }
+  }
+}

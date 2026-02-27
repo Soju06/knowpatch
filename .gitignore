@@ -3,3 +3,6 @@ bin/
 dist/
 *.js.map
 .DS_Store
+.agents/hooks/state/
+
+__pycache__

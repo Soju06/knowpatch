@@ -3,34 +3,15 @@ import { resolve } from "node:path";
 import { parse as parseYaml } from "yaml";
 import { getSkillSourcePath } from "./paths.js";
 
-export interface CorrectionEntry {
-  id: string;
-  package: string;
-  lookup: string;
-  cached_version: string | null;
-  last_checked: string;
-  /** Source file name */
-  file: string;
-}
-
 export interface CorrectionFile {
   ecosystem: string;
   description: string;
   tags: string[];
   last_updated: string;
-  entries: CorrectionEntry[];
   /** Raw markdown body below frontmatter */
   body: string;
   /** Source file name */
   file: string;
-}
-
-interface FrontmatterEntry {
-  id: string;
-  package: string;
-  lookup: string;
-  cached_version: string | null;
-  last_checked: string;
 }
 
 interface Frontmatter {
@@ -38,7 +19,6 @@ interface Frontmatter {
   description: string;
   tags: string[];
   last_updated: string;
-  entries: FrontmatterEntry[];
 }
 
 /** Parse YAML frontmatter and markdown body from a corrections file */
@@ -63,23 +43,16 @@ export function parseCorrectionFile(filename: string, content: string): Correcti
       description: "",
       tags: [],
       last_updated: "",
-      entries: [],
       body: content,
       file: filename,
     };
   }
-
-  const entries: CorrectionEntry[] = (frontmatter.entries ?? []).map((e) => ({
-    ...e,
-    file: filename,
-  }));
 
   return {
     ecosystem: frontmatter.ecosystem,
     description: frontmatter.description,
     tags: frontmatter.tags ?? [],
     last_updated: frontmatter.last_updated,
-    entries,
     body,
     file: filename,
   };
@@ -99,12 +72,6 @@ export async function parseAllCorrections(): Promise<CorrectionFile[]> {
   }
 
   return results;
-}
-
-/** Get all entries across all correction files */
-export async function parseCorrections(): Promise<CorrectionEntry[]> {
-  const files = await parseAllCorrections();
-  return files.flatMap((f) => f.entries);
 }
 
 /** Find correction files matching any of the given tags */

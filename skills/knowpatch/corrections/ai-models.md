@@ -3,22 +3,6 @@ ecosystem: ai-models
 description: AI model names, IDs, SDK versions, multimodal support
 tags: [claude, gpt, gemini, openai, anthropic, model, llm, sdk, ai]
 last_updated: "2026-02-24"
-entries:
-  - id: anthropic-claude
-    package: "@anthropic-ai/sdk"
-    lookup: "npm view @anthropic-ai/sdk version"
-    cached_version: null
-    last_checked: "2026-02-24"
-  - id: openai-gpt
-    package: "openai"
-    lookup: "npm view openai version"
-    cached_version: null
-    last_checked: "2026-02-24"
-  - id: google-gemini
-    package: "@google/genai"
-    lookup: "npm view @google/genai version"
-    cached_version: null
-    last_checked: "2026-02-24"
 ---
 
 # AI Models — Version Corrections

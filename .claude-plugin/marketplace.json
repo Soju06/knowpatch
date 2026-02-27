@@ -1,6 +1,6 @@
 {
   "name": "knowpatch-marketplace",
-  "owner": { "name": "taehoon" },
+  "owner": { "name": "Soju06" },
   "metadata": {
     "description": "LLM knowledge cutoff corrections for Claude Code",
     "version": "1.0.0"
@@ -8,7 +8,11 @@
   "plugins": [
     {
       "name": "knowpatch",
-      "source": "./"
+      "source": "./",
+      "description": "LLM knowledge cutoff compensator — corrects outdated versions and deprecated APIs",
+      "version": "0.1.0",
+      "license": "MIT",
+      "keywords": ["version", "knowledge-cutoff", "llm", "corrections"]
     }
   ]
 }

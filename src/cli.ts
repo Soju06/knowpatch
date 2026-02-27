@@ -3,8 +3,6 @@ import { Command } from "commander";
 import { select } from "@inquirer/prompts";
 import { installCommand } from "./commands/install.js";
 import { uninstallCommand } from "./commands/uninstall.js";
-import { checkCommand } from "./commands/check.js";
-import { updateCommand } from "./commands/update.js";
 import { isInteractive } from "./ui/interactive.js";
 import { COLORS } from "./ui/palette.js";
 import pkg from "../package.json";
@@ -31,21 +29,6 @@ program
   .option("--scope <scope>", "Uninstall scope: user or project", "user")
   .action(uninstallCommand);
 
-program
-  .command("check")
-  .description(
-    "Validate corrections against live package data — reports OK/DRIFT/ERROR",
-  )
-  .action(checkCommand);
-
-program
-  .command("update")
-  .description(
-    "Run live lookups and update drifted entries in corrections files",
-  )
-  .option("--yes", "Skip confirmation prompt")
-  .action(updateCommand);
-
 // Interactive menu when no subcommand is given
 if (process.argv.length <= 2) {
   if (isInteractive()) {
@@ -61,8 +44,6 @@ if (process.argv.length <= 2) {
       choices: [
         { name: "Install skill", value: "install" },
         { name: "Uninstall skill", value: "uninstall" },
-        { name: "Check corrections", value: "check" },
-        { name: "Update corrections", value: "update" },
       ],
     }).then((action) => {
       process.argv.push(action);

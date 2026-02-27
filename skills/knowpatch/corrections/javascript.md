@@ -3,22 +3,6 @@ ecosystem: javascript
 description: JS/TS library API changes
 tags: [zod, react, typescript, npm, bun, deno, pnpm, esm, types, javascript, js, ts]
 last_updated: "2026-02-24"
-entries:
-  - id: zod
-    package: "zod"
-    lookup: "npm view zod version"
-    cached_version: null
-    last_checked: "2026-02-24"
-  - id: react
-    package: "react"
-    lookup: "npm view react version"
-    cached_version: null
-    last_checked: "2026-02-24"
-  - id: typescript
-    package: "typescript"
-    lookup: "npm view typescript version"
-    cached_version: null
-    last_checked: "2026-02-24"
 ---
 
 # JavaScript/TypeScript — Version Corrections
@@ -34,7 +18,7 @@ entries:
 
 ### Zod 4 — 2025
 - **Wrong (training data)**: Zod 3.x with `z.string().email()`, `z.string().uuid()` method chaining
-- **Correct (current)**: Zod 4 (npm view → 4.3.6)
+- **Correct (current)**: Zod 4
 
 **Key API change — string format validators moved to top-level:**
 
@@ -105,7 +89,7 @@ entries:
 ### React 19 — 2024-12
 - **Wrong (training data)**: React 18 is the latest, `@types/react` must be installed separately, `forwardRef` is required
 - **Correct (current)**:
-  - React 19 (npm view → 19.2.4)
+  - React 19
   - `@types/react` is **not needed** as a separate install (built into React 19)
   - `forwardRef` is **unnecessary** — `ref` is passed as a regular prop
   - `use` hook — Read Promises and Context directly
@@ -122,7 +106,7 @@ entries:
 ### TypeScript 5.9 — 2025
 - **Wrong (training data)**: TypeScript 5.3-5.5 is the latest
 - **Correct (current)**:
-  - TypeScript 5.9 (npm view → 5.9.3)
+  - TypeScript 5.9
   - `moduleResolution: "bundler"` now the default
   - `satisfies` operator stabilized
   - `import type` auto-separation improved
