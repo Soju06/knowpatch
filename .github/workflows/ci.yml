@@ -56,7 +56,7 @@ jobs:
           set -euo pipefail
           TARBALL=$(ls knowpatch-*.tgz)
           CONTENTS=$(tar tzf "${TARBALL}")
-          echo "${CONTENTS}" | grep -q "package/bin/cli.js"    || { echo "FAIL: bin/cli.js missing"; exit 1; }
-          echo "${CONTENTS}" | grep -q "package/bin/detect.js" || { echo "FAIL: bin/detect.js missing"; exit 1; }
-          echo "${CONTENTS}" | grep -q "package/skills/"       || { echo "FAIL: skills/ missing"; exit 1; }
+          echo "${CONTENTS}" | grep -q "package/bin/cli.js"                    || { echo "FAIL: bin/cli.js missing"; exit 1; }
+          echo "${CONTENTS}" | grep -q "package/skills/knowpatch/bin/detect.js" || { echo "FAIL: skills/knowpatch/bin/detect.js missing"; exit 1; }
+          echo "${CONTENTS}" | grep -q "package/skills/"                        || { echo "FAIL: skills/ missing"; exit 1; }
           echo "Package contents verified"
