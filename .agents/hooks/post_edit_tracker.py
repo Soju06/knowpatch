@@ -14,18 +14,18 @@ except ImportError:
         pass
 
 
-# 코드 파일 확장자
+# Code file extensions
 CODE_EXTENSIONS = {".ts", ".tsx", ".js", ".jsx"}
 
-# 코드 디렉토리 (프로젝트 루트 기준 상대경로)
+# Code directories (relative to project root)
 CODE_DIRS = {"src/", "tests/"}
 
-# 제외 패턴
+# Exclusion patterns
 EXCLUDE_PATTERNS = {"node_modules/", ".agents/", "bin/", "skills/"}
 
 
 def is_code_file(file_path: str, project_dir: str) -> bool:
-    """코드 파일인지 판별."""
+    """Determine if the file is a code file."""
     if Path(file_path).suffix not in CODE_EXTENSIONS:
         return False
 
@@ -54,13 +54,13 @@ def main() -> None:
     if not file_path or not is_code_file(file_path, project_dir):
         sys.exit(0)
 
-    # dirty state 기록
+    # Record dirty state
     hook_dir = Path(__file__).resolve().parent
     state_dir = hook_dir / "state"
     state_dir.mkdir(parents=True, exist_ok=True)
     state_path = state_dir / f"dirty-{session_id}.json"
 
-    # 기존 state 로드
+    # Load existing state
     state: dict[str, object] = {"modified": True, "files": [], "last_modified": ""}
     if state_path.exists():
         try:
@@ -69,7 +69,7 @@ def main() -> None:
         except (json.JSONDecodeError, PermissionError):
             pass
 
-    # 파일 추가 (중복 제거)
+    # Add file (deduplicate)
     files = state.get("files", [])
     if isinstance(files, list) and file_path not in files:
         files.append(file_path)

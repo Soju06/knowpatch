@@ -1,6 +1,6 @@
 # Git Workflow
 
-## 커밋 메시지
+## Commit Messages
 
 ```
 type(scope): description
@@ -14,21 +14,21 @@ type(scope): description
 
 `cli`, `core`, `skill`, `hook`, `ui`
 
-### Correction 변경
+### Correction Changes
 
-- 새 correction 추가: `feat(skill): add {ecosystem} corrections`
-- 기존 correction 수정: `fix(skill): update {entry-id} version`
+- New correction: `feat(skill): add {ecosystem} corrections`
+- Update existing correction: `fix(skill): update {entry-id} version`
 
-## 브랜치
+## Branches
 
-- `main` — 안정 브랜치
-- `feat/{description}` — 기능 브랜치
-- `fix/{description}` — 버그 수정
+- `main` — stable branch
+- `feat/{description}` — feature branch
+- `fix/{description}` — bugfix branch
 
-## 푸시 전 필수
+## Pre-push Requirements
 
 ```bash
 tsc --noEmit && bun test
 ```
 
-두 체크 모두 통과해야 푸시 가능.
+Both checks must pass before pushing.

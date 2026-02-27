@@ -232,8 +232,8 @@ def main() -> None:
         )
         block_message = rule.get(
             "blockMessage",
-            f"BLOCKED: /{name}을 먼저 실행하세요.\n"
-            f"이 파일 수정 전에 해당 스킬을 확인해야 합니다.\n\n"
+            f"BLOCKED: Run /{name} first.\n"
+            f"You must review the skill before editing this file.\n\n"
             f"→ Skill tool: '{name}'",
         )
         print(block_message, file=sys.stderr)

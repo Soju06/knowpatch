@@ -78,7 +78,7 @@ export async function safeLstat(
   }
 }
 
-/** Canonical 경로에 우리 스킬이 설치되어 있는지 (실제 디렉토리 + SKILL.md 존재) */
+/** Check if skill is installed at canonical path (real directory + SKILL.md exists) */
 export async function isCanonicalInstalled(
   canonicalPath: string,
 ): Promise<boolean> {
@@ -93,7 +93,7 @@ export async function isCanonicalInstalled(
   }
 }
 
-/** 플랫폼 경로가 canonical을 가리키는 symlink인지 */
+/** Check if platform path is a symlink pointing to canonical */
 export async function isPlatformLinked(
   platformPath: string,
   canonicalPath: string,
@@ -109,7 +109,7 @@ export async function isPlatformLinked(
   }
 }
 
-/** 플랫폼 symlink에 사용할 상대 경로 계산 */
+/** Compute relative path for platform symlink */
 export function getRelativeTarget(
   linkPath: string,
   targetPath: string,
@@ -117,7 +117,7 @@ export function getRelativeTarget(
   return relative(dirname(linkPath), targetPath);
 }
 
-/** 두 경로가 같은 실제 위치를 가리키는지 (parent-level symlink 감지) */
+/** Check if two paths resolve to the same real location (detects parent-level symlinks) */
 export async function isSameRealPath(
   path1: string,
   path2: string,

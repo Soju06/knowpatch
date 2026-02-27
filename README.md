@@ -33,9 +33,9 @@ LLM knowledge cutoff compensator for AI coding agents. Corrects outdated version
 npx knowpatch
 ```
 
-```
-  Knowpatch v0.1.0
-  Corrects outdated APIs, renamed packages, and deprecated patterns for AI coding agents
+<pre>
+  <b>Knowpatch v0.1.0</b>
+  <i>Corrects outdated APIs, renamed packages, and deprecated patterns for AI coding agents</i>
 
 ? Scope:
 ❯ User (~/…)
@@ -47,26 +47,20 @@ npx knowpatch
 ◯ Codex CLI
 ◯ Gemini CLI
 
-  ✔ Canonical skill installed
-  ✔ Claude Code skill linked
-  ✔ Claude Code hook registered
-```
+  <span style="color:green">✓</span> Canonical skill installed
+  <span style="color:green">✓</span> Claude Code skill linked
+  <span style="color:green">✓</span> Claude Code hook registered
+</pre>
 
 Done. Corrections start injecting into your agent automatically.
 
+## How It Works
+
+> **User prompt** → Detect hook scans keywords → Matches correction file tags → Injects relevant entries into agent context
+
+The hook reads each prompt and matches against correction file tags. Only relevant entries are injected — not the entire correction set.
+
 ## What It Corrects
-
-| Wrong (training data) | Correct (current) |
-|-----------------------|-------------------|
-| `npx shadcn-ui@latest` | `npx shadcn@latest` |
-| `z.string().email()` | `z.email()` |
-| `.eslintrc` | `eslint.config.js` |
-| `claude-3-opus-20240229` | `claude-opus-4-6` |
-| macOS 16 Sequoia | macOS 26 Tahoe |
-
-<details>
-<summary>All correction categories</summary>
-<br>
 
 | File | Covers |
 |------|--------|
@@ -78,16 +72,6 @@ Done. Corrections start injecting into your agent automatically.
 | `python.md` | Pydantic, Ruff, uv, pip |
 | `platforms.md` | Supabase, Vercel, Cloudflare |
 | `runtimes.md` | Node.js, Bun, Deno, Python, macOS |
-
-</details>
-
-## How It Works
-
-```
-User prompt → Detect hook matches keywords → Relevant corrections injected → Agent uses current knowledge
-```
-
-The detect hook reads each prompt and matches against correction file tags. Only relevant entries are injected — not the entire correction set.
 
 ## CLI
 

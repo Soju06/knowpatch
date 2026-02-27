@@ -59,7 +59,7 @@ def check_dirty_guardrail(session_id: str) -> bool:
 
     Returns True if blocked (should exit 2), False if OK.
     """
-    # 환경변수 우회
+    # Environment variable override
     if os.environ.get("SKIP_TYPE_LINT_GUARD") == "1":
         return False
 
@@ -74,7 +74,7 @@ def check_dirty_guardrail(session_id: str) -> bool:
     pass_state = load_type_lint_pass()
     pass_ts = pass_state.get("timestamp", "")
 
-    # type-lint가 코드 수정 이후 실행되지 않음 → BLOCK
+    # type-lint has not been run since code modification → BLOCK
     if not pass_ts or pass_ts < last_modified:
         files = dirty.get("files", [])
         print(
@@ -82,24 +82,24 @@ def check_dirty_guardrail(session_id: str) -> bool:
             file=sys.stderr,
         )
         print(
-            "BLOCKED: 코드가 수정되었지만 tsc/bun test가 실행되지 않았습니다.",
+            "BLOCKED: Code was modified but tsc/bun test has not been run.",
             file=sys.stderr,
         )
         print(
             "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
             file=sys.stderr,
         )
-        print(f"\n  수정된 파일 ({len(files)}개):", file=sys.stderr)
+        print(f"\n  Modified files ({len(files)}):", file=sys.stderr)
         for f in files[:10]:
             print(f"    - {f}", file=sys.stderr)
         if len(files) > 10:
-            print(f"    ... 외 {len(files) - 10}개", file=sys.stderr)
+            print(f"    ... and {len(files) - 10} more", file=sys.stderr)
         print(
-            "\n  → tsc --noEmit && bun test 를 실행하세요.",
+            "\n  → Run tsc --noEmit && bun test",
             file=sys.stderr,
         )
         print(
-            "  → 우회: SKIP_TYPE_LINT_GUARD=1\n",
+            "  → Override: SKIP_TYPE_LINT_GUARD=1\n",
             file=sys.stderr,
         )
         return True
@@ -115,7 +115,7 @@ def main() -> None:
 
     session_id = input_data.get("session_id", "unknown")
 
-    # 1. dirty state 기반 type-lint guardrail (blocking)
+    # 1. Dirty state type-lint guardrail (blocking)
     if check_dirty_guardrail(session_id):
         emit_event(
             session_id,
@@ -139,7 +139,7 @@ def main() -> None:
         )
         sys.exit(2)
 
-    # 2. 스킬 사용 상태 로드
+    # 2. Load skill usage state
     try:
         state = load_session_state(session_id)
     except (json.JSONDecodeError, PermissionError):
@@ -149,7 +149,7 @@ def main() -> None:
     used = set(state.get("usedSkills", []))
     unused = suggested - used
 
-    # 3. 미사용 스킬 리마인더
+    # 3. Unused skill reminder
     if not unused:
         emit_event(
             session_id,

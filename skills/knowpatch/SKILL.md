@@ -1,18 +1,16 @@
 ---
 name: knowpatch
 description: >
-  LLM knowledge cutoff compensator — provides knowledge corrections for breaking changes
-  and API drift that may differ from training data.
-  Corrections cover: renamed packages (shadcn-ui→shadcn), changed APIs (z.string().email()→z.email()),
-  new config formats (.eslintrc→eslint.config.js), current model IDs (Claude Opus 4.6, GPT-5.3, GLM-5, MiniMax M2.5, Kimi K2.5, DeepSeek V3.2, Qwen 3.5),
-  Apple platform changes (macOS 26 Tahoe, Liquid Glass, Swift 6.2, Metal 4).
-  Version numbers are NOT cached — always verify via package manager (npm view, pip index versions).
-  Useful for tasks involving: install, add, create, init, scaffold, upgrade, migrate, latest, version,
-  dependency, shadcn, tailwind, vite, zod, eslint, react, next, svelte, nuxt, django, fastapi, pydantic,
-  ruff, uv, claude, gpt, gemini, openai, anthropic, kimi, minimax, glm, deepseek, qwen, llama, mistral,
-  open-source, self-hosted, recommend, model, llm, sdk, npm, pip, cargo, bun,
-  node, python, typescript, supabase, jwks, pyproject.toml, package.json, requirements.txt,
-  macos, xcode, swift, swiftui, liquid-glass, metal, apple, ios, rosetta, foundation-models.
+  LLM knowledge cutoff compensator — knowledge corrections for breaking changes and API drift.
+  Covers: renamed packages (shadcn-ui→shadcn), changed APIs (z.string().email()→z.email()),
+  new config formats (.eslintrc→eslint.config.js), current model IDs, Apple platform changes.
+  Versions are NOT cached — always verify via package manager.
+  Useful for: install, create, scaffold, upgrade, migrate, latest, version, dependency,
+  shadcn, tailwind, vite, zod, eslint, react, next, svelte, nuxt,
+  django, fastapi, pydantic, ruff, uv,
+  claude, gpt, gemini, openai, anthropic, deepseek, qwen, llama, mistral, kimi, minimax, glm,
+  node, bun, python, typescript, macos, xcode, swift, swiftui,
+  supabase, npm, pip, cargo, package.json, pyproject.toml, requirements.txt.
 ---
 
 # Knowpatch
