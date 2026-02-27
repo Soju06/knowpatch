@@ -62,9 +62,13 @@ export function getPlatformSettingsPath(
   return resolve(getScopeBase(scope), platform.configDir, "settings.json");
 }
 
-/** Absolute path to the built hook detect script */
-export function getHookCommand(): string {
-  return `node ${resolve(getPackageRoot(), "bin/detect.js")}`;
+/** Hook command for settings.json — relative for project scope, absolute for user */
+export function getHookCommand(scope: Scope): string {
+  const detectScript = ".agents/skills/knowpatch/bin/detect.js";
+  if (scope === "project") {
+    return `node ${detectScript}`;
+  }
+  return `node ${resolve(homedir(), detectScript)}`;
 }
 
 /** Safe lstat that returns null instead of throwing */

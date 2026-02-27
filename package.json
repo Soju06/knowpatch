@@ -7,7 +7,7 @@
     "knowpatch": "bin/cli.js"
   },
   "scripts": {
-    "build": "bun build src/cli.ts --outdir bin --target node --format esm && bun build src/hooks/detect.ts --outdir bin --target node --format esm",
+    "build": "bun build src/cli.ts --outdir bin --target node --format esm && bun build src/hooks/detect.ts --outdir skills/knowpatch/bin --target node --format esm",
     "dev": "bun run src/cli.ts",
     "test": "bun test",
     "lint": "biome check src/ tests/",

@@ -67,34 +67,54 @@ async function syncInstallation(scope: Scope): Promise<void> {
     if (ps.implicitlyLinked) {
       const hookStatus = ps.platform.supportsHooks
         ? ps.hookInstalled
-          ? "hook up-to-date"
+          ? ps.hookUpToDate
+            ? "hook up-to-date"
+            : "hook outdated"
           : "hook missing"
         : "";
       console.log(
         `  ${ICONS.ok} ${COLORS.success(`${ps.platform.displayName}:`)} shared via parent symlink${hookStatus ? `, ${hookStatus}` : ""}`,
       );
 
-      if (ps.platform.supportsHooks && !ps.hookInstalled) {
-        await installPlatformHook(ps.platform, scope);
-        console.log(
-          `  ${ICONS.ok} ${COLORS.success(`${ps.platform.displayName}:`)} hook restored`,
-        );
+      if (ps.platform.supportsHooks) {
+        if (!ps.hookInstalled) {
+          await installPlatformHook(ps.platform, scope);
+          console.log(
+            `  ${ICONS.ok} ${COLORS.success(`${ps.platform.displayName}:`)} hook restored`,
+          );
+        } else if (!ps.hookUpToDate) {
+          await uninstallPlatformHook(ps.platform, scope);
+          await installPlatformHook(ps.platform, scope);
+          console.log(
+            `  ${ICONS.ok} ${COLORS.success(`${ps.platform.displayName}:`)} hook updated`,
+          );
+        }
       }
     } else if (ps.symlinkValid) {
       const hookStatus = ps.platform.supportsHooks
         ? ps.hookInstalled
-          ? "hook up-to-date"
+          ? ps.hookUpToDate
+            ? "hook up-to-date"
+            : "hook outdated"
           : "hook missing"
         : "";
       console.log(
         `  ${ICONS.ok} ${COLORS.success(`${ps.platform.displayName}:`)} symlink valid${hookStatus ? `, ${hookStatus}` : ""}`,
       );
 
-      if (ps.platform.supportsHooks && !ps.hookInstalled) {
-        await installPlatformHook(ps.platform, scope);
-        console.log(
-          `  ${ICONS.ok} ${COLORS.success(`${ps.platform.displayName}:`)} hook restored`,
-        );
+      if (ps.platform.supportsHooks) {
+        if (!ps.hookInstalled) {
+          await installPlatformHook(ps.platform, scope);
+          console.log(
+            `  ${ICONS.ok} ${COLORS.success(`${ps.platform.displayName}:`)} hook restored`,
+          );
+        } else if (!ps.hookUpToDate) {
+          await uninstallPlatformHook(ps.platform, scope);
+          await installPlatformHook(ps.platform, scope);
+          console.log(
+            `  ${ICONS.ok} ${COLORS.success(`${ps.platform.displayName}:`)} hook updated`,
+          );
+        }
       }
     } else {
       console.log(
@@ -107,6 +127,21 @@ async function syncInstallation(scope: Scope): Promise<void> {
       console.log(
         `  ${ICONS.ok} ${COLORS.success(`${ps.platform.displayName}:`)} symlink restored`,
       );
+
+      if (ps.platform.supportsHooks) {
+        if (!ps.hookInstalled) {
+          await installPlatformHook(ps.platform, scope);
+          console.log(
+            `  ${ICONS.ok} ${COLORS.success(`${ps.platform.displayName}:`)} hook restored`,
+          );
+        } else if (!ps.hookUpToDate) {
+          await uninstallPlatformHook(ps.platform, scope);
+          await installPlatformHook(ps.platform, scope);
+          console.log(
+            `  ${ICONS.ok} ${COLORS.success(`${ps.platform.displayName}:`)} hook updated`,
+          );
+        }
+      }
     }
   }
 

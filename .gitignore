@@ -4,5 +4,6 @@ dist/
 *.js.map
 .DS_Store
 .agents/hooks/state/
+skills/knowpatch/bin/
 
 __pycache__

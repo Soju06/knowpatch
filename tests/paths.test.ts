@@ -95,10 +95,23 @@ describe("getPlatformSettingsPath", () => {
 });
 
 describe("getHookCommand", () => {
-  test("includes bin/detect.js", () => {
-    const cmd = getHookCommand();
-    expect(cmd).toContain("bin/detect.js");
-    expect(cmd).toStartWith("node ");
+  test("project scope returns relative path", () => {
+    const cmd = getHookCommand("project");
+    expect(cmd).toBe("node .agents/skills/knowpatch/bin/detect.js");
+  });
+
+  test("user scope returns absolute path with homedir", () => {
+    const { homedir } = require("node:os");
+    const { resolve } = require("node:path");
+    const cmd = getHookCommand("user");
+    expect(cmd).toBe(
+      `node ${resolve(homedir(), ".agents/skills/knowpatch/bin/detect.js")}`,
+    );
+  });
+
+  test("both scopes start with node prefix", () => {
+    expect(getHookCommand("project")).toStartWith("node ");
+    expect(getHookCommand("user")).toStartWith("node ");
   });
 });
 
