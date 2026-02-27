@@ -9,7 +9,7 @@ import { updateCommand } from "./commands/update.js";
 import { getUpdateCommand } from "./core/package-manager.js";
 import type { Scope } from "./core/paths.js";
 import { detectInstallation } from "./core/status.js";
-import { checkForUpdate } from "./core/version.js";
+import { checkForUpdate, getLatestVersion } from "./core/version.js";
 import { isInteractive } from "./ui/interactive.js";
 import { COLORS, ICONS } from "./ui/palette.js";
 
@@ -115,13 +115,14 @@ if (process.argv.length <= 2) {
             console.log();
 
             const allInstalled = installed.length === status.platforms.length;
+            const latest = newer ?? (await getLatestVersion());
+            const updateLabel = newer
+              ? `Update ${COLORS.dim(`(${pkg.version} → ${newer})`)}`
+              : latest
+                ? `Update ${COLORS.dim(`(${pkg.version} ${ICONS.ok})`)}`
+                : `Update ${COLORS.dim(`(${pkg.version})`)}`;
             const choices: { name: string; value: Action }[] = [
-              {
-                name: newer
-                  ? `Update ${COLORS.dim(`(${pkg.version} → ${newer})`)}`
-                  : `Update ${COLORS.dim(`(${pkg.version})`)}`,
-                value: "update",
-              },
+              { name: updateLabel, value: "update" },
             ];
             if (!allInstalled) {
               choices.push({
