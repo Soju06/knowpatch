@@ -1,8 +1,15 @@
-import { cp, mkdir, rm, symlink } from "node:fs/promises";
+import { cp, mkdir, readdir, readFile, rm, symlink } from "node:fs/promises";
 import { homedir } from "node:os";
 import { dirname, resolve } from "node:path";
 import { checkbox } from "@inquirer/prompts";
-import { installPlatformHook, isPlatformHookInstalled } from "../core/hooks.js";
+import {
+  installPlatformHook,
+  isPlatformHookInstalled,
+  isPlatformHookUpToDate,
+  uninstallPlatformHook,
+} from "../core/hooks.js";
+import { getUpdateCommand } from "../core/package-manager.js";
+import { parseFrontmatter } from "../core/parser.js";
 import {
   getAgentsSkillPath,
   getPlatformSkillPath,
@@ -16,6 +23,7 @@ import {
   safeLstat,
 } from "../core/paths.js";
 import { PLATFORMS, type PlatformConfig } from "../core/platforms.js";
+import { checkForUpdate } from "../core/version.js";
 import { isInteractive } from "../ui/interactive.js";
 import { COLORS, ICONS } from "../ui/palette.js";
 
@@ -79,9 +87,8 @@ export async function installCommand(options: InstallOptions): Promise<void> {
   // 1. Canonical: .agents/skills/knowpatch ← cp -r from source
   const canonicalPath = getAgentsSkillPath(scope);
   if (await isCanonicalInstalled(canonicalPath)) {
-    console.log(
-      `  ${ICONS.ok} ${COLORS.success("Canonical:")} ${canonicalPath}`,
-    );
+    const syncResult = await syncCanonical(source, canonicalPath);
+    console.log(`  ${ICONS.ok} ${COLORS.success("Canonical:")} ${syncResult}`);
   } else {
     const existing = await safeLstat(canonicalPath);
     if (existing !== null) {
@@ -137,9 +144,17 @@ export async function installCommand(options: InstallOptions): Promise<void> {
     // 3. Hook registration
     if (platform.supportsHooks) {
       if (await isPlatformHookInstalled(platform, scope)) {
-        console.log(
-          `  ${ICONS.ok} ${COLORS.success(`${platform.displayName}:`)} hook already registered`,
-        );
+        if (!(await isPlatformHookUpToDate(platform, scope))) {
+          await uninstallPlatformHook(platform, scope);
+          await installPlatformHook(platform, scope);
+          console.log(
+            `  ${ICONS.ok} ${COLORS.success(`${platform.displayName}:`)} hook updated`,
+          );
+        } else {
+          console.log(
+            `  ${ICONS.ok} ${COLORS.success(`${platform.displayName}:`)} hook already registered`,
+          );
+        }
       } else {
         await installPlatformHook(platform, scope);
         console.log(
@@ -155,4 +170,141 @@ export async function installCommand(options: InstallOptions): Promise<void> {
   console.log(
     `  Done! Installed for ${count} platform${count !== 1 ? "s" : ""}.`,
   );
+
+  // Non-blocking update notification
+  showUpdateNotification().catch(() => {});
+}
+
+/** Read the version field from a SKILL.md or correction file's YAML frontmatter */
+async function readFileVersion(filePath: string): Promise<string | undefined> {
+  try {
+    const content = await readFile(filePath, "utf-8");
+    const { frontmatter } = parseFrontmatter(content);
+    return (frontmatter as Record<string, unknown> | null)?.version as
+      | string
+      | undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/**
+ * Sync canonical installation with source, using file-level version patching.
+ * Returns a human-readable status string.
+ */
+async function syncCanonical(
+  source: string,
+  canonicalPath: string,
+): Promise<string> {
+  const installedVersion = await readFileVersion(
+    resolve(canonicalPath, "SKILL.md"),
+  );
+  const sourceVersion = await readFileVersion(resolve(source, "SKILL.md"));
+
+  // No version tag → v0.3 legacy → full re-sync
+  if (!installedVersion) {
+    await rm(canonicalPath, { recursive: true, force: true });
+    await mkdir(dirname(canonicalPath), { recursive: true });
+    await cp(source, canonicalPath, { recursive: true });
+    return `migrated from legacy → ${sourceVersion ?? "latest"}`;
+  }
+
+  // Same version → up to date
+  if (installedVersion === sourceVersion) {
+    return `up to date (${installedVersion})`;
+  }
+
+  // Different version → file-level patch
+  const patched = await patchFiles(source, canonicalPath);
+  return `updated ${installedVersion} → ${sourceVersion ?? "latest"} (${patched} file${patched !== 1 ? "s" : ""})`;
+}
+
+/**
+ * Patch individual files by comparing source and installed versions.
+ * Returns the number of files patched.
+ */
+async function patchFiles(source: string, installed: string): Promise<number> {
+  let patched = 0;
+
+  // Patch SKILL.md
+  const srcSkillVer = await readFileVersion(resolve(source, "SKILL.md"));
+  const instSkillVer = await readFileVersion(resolve(installed, "SKILL.md"));
+  if (srcSkillVer !== instSkillVer) {
+    await cp(resolve(source, "SKILL.md"), resolve(installed, "SKILL.md"));
+    patched++;
+  }
+
+  // Patch corrections/
+  const srcCorr = resolve(source, "corrections");
+  const instCorr = resolve(installed, "corrections");
+  await mkdir(instCorr, { recursive: true });
+
+  const srcFiles = (await pathExists(srcCorr))
+    ? (await readdir(srcCorr)).filter((f) => f.endsWith(".md"))
+    : [];
+  const instFiles = (await pathExists(instCorr))
+    ? (await readdir(instCorr)).filter((f) => f.endsWith(".md"))
+    : [];
+
+  const srcSet = new Set(srcFiles);
+  const instSet = new Set(instFiles);
+
+  // Copy new or updated files
+  for (const file of srcFiles) {
+    const srcVer = await readFileVersion(resolve(srcCorr, file));
+    const instVer = instSet.has(file)
+      ? await readFileVersion(resolve(instCorr, file))
+      : undefined;
+
+    if (srcVer !== instVer || !instSet.has(file)) {
+      await cp(resolve(srcCorr, file), resolve(instCorr, file));
+      patched++;
+    }
+  }
+
+  // Remove files that no longer exist in source
+  for (const file of instFiles) {
+    if (!srcSet.has(file)) {
+      await rm(resolve(instCorr, file), { force: true });
+      patched++;
+    }
+  }
+
+  // Patch bin/detect.js if source has it
+  const srcDetect = resolve(source, "bin/detect.js");
+  const instDetect = resolve(installed, "bin/detect.js");
+  if (await pathExists(srcDetect)) {
+    await mkdir(resolve(installed, "bin"), { recursive: true });
+    await cp(srcDetect, instDetect);
+    patched++;
+  }
+
+  return patched;
+}
+
+/** Show a non-blocking update notification after install */
+async function showUpdateNotification(): Promise<void> {
+  const pkgPath = resolve(
+    dirname(new URL(import.meta.url).pathname),
+    "../../package.json",
+  );
+  let currentVersion: string;
+  try {
+    const pkg = JSON.parse(await readFile(pkgPath, "utf-8")) as {
+      version: string;
+    };
+    currentVersion = pkg.version;
+  } catch {
+    return;
+  }
+
+  const newer = await checkForUpdate(currentVersion);
+  if (!newer) return;
+
+  const updateCmd = getUpdateCommand();
+  console.log();
+  console.log(
+    `  ${ICONS.drift} ${COLORS.warn(`Update available: ${currentVersion} → ${newer}`)}`,
+  );
+  console.log(`    Run ${COLORS.info(updateCmd)} to update`);
 }

@@ -2,6 +2,7 @@
 ecosystem: runtimes
 description: Runtime version tracks, LTS status
 tags: [node, python, bun, deno, go, java, runtime]
+version: "0.4.0" # x-release-please-version
 last_updated: "2026-02-24"
 ---
 

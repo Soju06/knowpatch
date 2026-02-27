@@ -1,5 +1,6 @@
 ---
 name: knowpatch
+version: "0.4.0" # x-release-please-version
 description: >
   LLM knowledge cutoff compensator — knowledge corrections for breaking changes and API drift.
   Covers: renamed packages (shadcn-ui→shadcn), changed APIs (z.string().email()→z.email()),

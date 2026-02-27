@@ -10,6 +10,46 @@
           "type": "json",
           "path": ".claude-plugin/plugin.json",
           "jsonpath": "$.version"
+        },
+        {
+          "type": "generic",
+          "path": "skills/knowpatch/SKILL.md"
+        },
+        {
+          "type": "generic",
+          "path": "skills/knowpatch/corrections/cli-tools.md"
+        },
+        {
+          "type": "generic",
+          "path": "skills/knowpatch/corrections/frameworks.md"
+        },
+        {
+          "type": "generic",
+          "path": "skills/knowpatch/corrections/frontier-models.md"
+        },
+        {
+          "type": "generic",
+          "path": "skills/knowpatch/corrections/javascript.md"
+        },
+        {
+          "type": "generic",
+          "path": "skills/knowpatch/corrections/macos.md"
+        },
+        {
+          "type": "generic",
+          "path": "skills/knowpatch/corrections/open-source-models.md"
+        },
+        {
+          "type": "generic",
+          "path": "skills/knowpatch/corrections/platforms.md"
+        },
+        {
+          "type": "generic",
+          "path": "skills/knowpatch/corrections/python.md"
+        },
+        {
+          "type": "generic",
+          "path": "skills/knowpatch/corrections/runtimes.md"
         }
       ]
     }
