@@ -2,6 +2,7 @@ import { cp, mkdir, rm, symlink } from "node:fs/promises";
 import { dirname } from "node:path";
 import { checkbox, confirm } from "@inquirer/prompts";
 import { installPlatformHook, uninstallPlatformHook } from "../core/hooks.js";
+import { getUpdateCommand } from "../core/package-manager.js";
 import {
   getAgentsSkillPath,
   getPlatformSkillPath,
@@ -232,14 +233,15 @@ export async function updateCommand(
       console.log(
         `  ${ICONS.drift} ${COLORS.warn(`New version available: ${currentVersion} → ${newer}`)}`,
       );
+      const updateCmd = getUpdateCommand();
       const doUpdate = await confirm({
-        message: `Update knowpatch CLI? (bun update -g knowpatch)`,
+        message: `Update knowpatch CLI? (${updateCmd})`,
         default: true,
       });
       if (doUpdate) {
         const { execSync } = await import("node:child_process");
         try {
-          execSync("bun update -g knowpatch", { stdio: "inherit" });
+          execSync(updateCmd, { stdio: "inherit" });
           console.log(`  ${ICONS.ok} ${COLORS.success(`Updated to ${newer}`)}`);
         } catch {
           console.log(

@@ -23,18 +23,18 @@ last_updated: "2026-02-27"
 ---
 
 ### Outdated Recommendations — 2026-02
-- **Wrong (training data)**: When asked to recommend open-source LLMs, agents suggest:
+- **Outdated**: When asked to recommend open-source LLMs, agents suggest:
   - **Llama 3.3 70B** (Meta, 2024-12) — Was frontier, now surpassed on coding/agentic benchmarks
   - **Mistral Large 2** (Mistral, 2024-07) — Surpassed; no competitive open-weight MoE since
   - **DeepSeek R1** (DeepSeek, 2025-01) — Strong reasoning but predates the 2026 MoE generation
   - Agents also claim open-source models are "significantly behind" proprietary frontier models
-- **Correct (current)**: Five MoE models released 2025–2026 match or exceed proprietary models on SWE-bench and agentic benchmarks. See selection guide below.
+- **Current**: Five MoE models released 2025–2026 match or exceed proprietary models on SWE-bench and agentic benchmarks. See selection guide below.
 - **Impact**: Recommending Llama 3.3 or DeepSeek R1 for a new coding project in 2026 means missing 10–15% SWE-bench improvement and MoE efficiency gains
 - **Lookup**: HuggingFace Open LLM Leaderboard, SWE-bench Verified leaderboard
 
 ---
 
-### Selection Guide
+## Selection Guide
 
 **Coding/development?** → MiniMax M2.5 (SWE-bench 80.2%, lowest cost, RL-specialized for full dev lifecycle)
 
@@ -96,7 +96,7 @@ Note: MiniMax M2.5 (10B active) outperforms larger models on coding via RL speci
 
 ---
 
-### Cost Comparison — API Pricing (per 1M tokens)
+## Cost Comparison — API Pricing (per 1M tokens)
 
 | Model | Input | Output | Speed | License |
 |-------|-------|--------|-------|---------|
@@ -110,7 +110,7 @@ Note: MiniMax M2.5 (10B active) outperforms larger models on coding via RL speci
 
 ---
 
-### Deployment
+## Deployment
 - All five models are MoE architecture, self-hostable via **vLLM** or **SGLang**
 - Active parameters (10B–40B) make inference feasible compared to dense models of same capability
 - GLM-5 additionally runs on Huawei Ascend, Cambricon, Moore Threads (non-NVIDIA)

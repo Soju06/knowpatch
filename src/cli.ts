@@ -6,6 +6,7 @@ import pkg from "../package.json";
 import { installCommand } from "./commands/install.js";
 import { uninstallCommand } from "./commands/uninstall.js";
 import { updateCommand } from "./commands/update.js";
+import { getUpdateCommand } from "./core/package-manager.js";
 import type { Scope } from "./core/paths.js";
 import { detectInstallation } from "./core/status.js";
 import { checkForUpdate } from "./core/version.js";
@@ -69,52 +70,98 @@ if (process.argv.length <= 2) {
         `  ${ICONS.drift} ${COLORS.warn(`Update available: ${pkg.version} → ${newer}`)}`,
       );
       console.log(
-        `  ${COLORS.dim("  Run")} bun update -g knowpatch ${COLORS.dim("to update")}`,
+        `  ${COLORS.dim("  Run")} ${getUpdateCommand()} ${COLORS.dim("to update")}`,
       );
     }
 
     console.log();
 
-    // 1. Scope selection
-    const scope: Scope = await select({
-      message: "Scope:",
-      choices: [
-        { name: "User (~/…)", value: "user" as const },
-        { name: "Project (./)", value: "project" as const },
-      ],
-    });
+    const BACK = Symbol("back");
+    type Back = typeof BACK;
+    type Action = "update" | "configure" | "uninstall" | Back;
 
-    // 2. Detect installation status
-    const status = await detectInstallation(scope);
-    const hasInstallation = status.canonical.valid;
+    let step: "scope" | "action" = "scope";
+    let scope: Scope = "user";
 
-    if (hasInstallation) {
-      // Show installed platforms
-      const installed = status.platforms.filter((ps) => ps.installed);
-      if (installed.length > 0) {
-        console.log();
-        console.log(
-          `  Installed: ${installed.map((ps) => `${ps.platform.displayName} ${ICONS.ok}`).join(", ")}`,
-        );
+    while (true) {
+      try {
+        if (step === "scope") {
+          const result = await select<Scope | Back>({
+            message: "Scope:",
+            choices: [
+              { name: "User (~/…)", value: "user" },
+              { name: "Project (./)", value: "project" },
+              { name: `${COLORS.dim("← Exit")}`, value: BACK },
+            ],
+          });
+          if (result === BACK) break;
+          scope = result;
+          step = "action";
+        } else {
+          const status = await detectInstallation(scope);
+          const hasInstallation = status.canonical.valid;
+
+          if (hasInstallation) {
+            const installed = status.platforms.filter((ps) => ps.installed);
+            if (installed.length > 0) {
+              console.log();
+              console.log(
+                `  Installed: ${installed.map((ps) => `${ps.platform.displayName} ${ICONS.ok}`).join(", ")}`,
+              );
+            }
+
+            console.log();
+
+            const allInstalled = installed.length === status.platforms.length;
+            const choices: { name: string; value: Action }[] = [
+              {
+                name: newer
+                  ? `Update ${COLORS.dim(`(${pkg.version} → ${newer})`)}`
+                  : `Update ${COLORS.dim(`(${pkg.version})`)}`,
+                value: "update",
+              },
+            ];
+            if (!allInstalled) {
+              choices.push({
+                name: "Configure platforms",
+                value: "configure",
+              });
+            }
+            choices.push(
+              { name: "Uninstall", value: "uninstall" },
+              { name: `${COLORS.dim("← Back")}`, value: BACK },
+            );
+
+            const action = await select<Action>({
+              message: "Action:",
+              choices,
+            });
+            if (action === BACK) {
+              step = "scope";
+              continue;
+            }
+
+            if (action === "update") {
+              await updateCommand({ scope }, pkg.version);
+            } else if (action === "configure") {
+              await updateCommand({ scope, reconfigure: true }, pkg.version);
+            } else {
+              await uninstallCommand({ scope });
+            }
+            break;
+          } else {
+            await installCommand({ scope });
+            break;
+          }
+        }
+      } catch (err) {
+        if (err instanceof ExitPromptError) {
+          if (step === "scope") break;
+          step = "scope";
+          continue;
+        }
+        throw err;
       }
-
-      console.log();
-
-      const action = await select({
-        message: "What would you like to do?",
-        choices: [
-          { name: "Update", value: "update" },
-          { name: "Uninstall", value: "uninstall" },
-        ],
-      });
-
-      if (action === "update") {
-        await updateCommand({ scope }, pkg.version);
-      } else {
-        await uninstallCommand({ scope });
-      }
-    } else {
-      await installCommand({ scope });
     }
   } else {
     program.parse();

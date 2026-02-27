@@ -16,14 +16,14 @@ last_updated: "2026-02-25"
 ---
 
 ### Supabase API Keys — 2025-06
-- **Wrong (training data)**: Use `SUPABASE_ANON_KEY` + `SUPABASE_SERVICE_ROLE_KEY` (JWT-based, 10-year expiry, non-revocable)
-- **Correct (current)**:
-  - `anon` key and `service_role` key are **deprecated** (security anti-pattern)
+- **Outdated**: Use `SUPABASE_ANON_KEY` + `SUPABASE_SERVICE_ROLE_KEY` (JWT-based, 10-year expiry, non-revocable)
+- **Current**:
+  - `anon` key and `service_role` key are deprecated in favor of revocable keys
   - New key structure:
     - **Publishable key** (`sb_publishable_...`) — Client-side, low privilege, individually revocable
     - **Secret key** (`sb_secret_...`) — Server-side, elevated privilege, individually revocable, multiple per project
   - Environment variable naming:
-    - Old: `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` — **NEVER use these**
+    - Old: `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` — prefer new key format
     - New: `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`
   - Key differences from legacy keys:
 
@@ -46,7 +46,7 @@ last_updated: "2026-02-25"
 **Client initialization:**
 
 ```typescript
-// WRONG (deprecated) — NEVER generate this pattern
+// Legacy — prefer publishable key
 import { createClient } from '@supabase/supabase-js'
 const supabase = createClient(url, process.env.SUPABASE_ANON_KEY!)
 
@@ -61,8 +61,8 @@ const supabaseAdmin = createClient(url, process.env.SUPABASE_SECRET_KEY!)
 ---
 
 ### Supabase JWKS JWT Verification — 2025-07
-- **Wrong (training data)**: Verify JWTs using shared `JWT_SECRET` from Supabase dashboard (symmetric HMAC)
-- **Correct (current)**:
+- **Outdated**: Verify JWTs using shared `JWT_SECRET` from Supabase dashboard (symmetric HMAC)
+- **Current**:
   - Supabase supports **asymmetric JWT signing** (JWKS)
   - Public key endpoint: `GET https://<project>.supabase.co/auth/v1/.well-known/jwks.json`
   - Use `jose` library for verification — no shared secret needed

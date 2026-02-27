@@ -18,8 +18,8 @@ last_updated: "2026-02-24"
 ---
 
 ### Next.js 16 — 2025
-- **Wrong (training data)**: Next.js 13 or 14 is the latest, Pages Router is mainstream
-- **Correct (current)**:
+- **Outdated**: Next.js 13 or 14 is the latest, Pages Router is mainstream
+- **Current**:
   - Next.js 16
   - App Router is the default (Pages Router is legacy)
   - Server Components are the default
@@ -30,8 +30,8 @@ last_updated: "2026-02-24"
 - **Lookup**: `npm view next version`
 
 ### Svelte 5 — 2024-10
-- **Wrong (training data)**: Svelte 4, reactive declarations `$:`, stores `$store`
-- **Correct (current)**:
+- **Outdated**: Svelte 4, reactive declarations `$:`, stores `$store`
+- **Current**:
   - Svelte 5
   - **Runes** system — complete reactivity redesign:
     - `$state` — Reactive state declaration
@@ -41,21 +41,21 @@ last_updated: "2026-02-24"
     - `$bindable` — Two-way binding props
   - `$:` reactive declaration — deprecated
   - Svelte stores (`writable`, `readable`) — replaceable with runes
-  - Events: `onclick={handler}` (lowercase), NOT `on:click` — Svelte 5 uses `onclick`
+  - Events: `onclick={handler}` (lowercase), replacing `on:click` in Svelte 5
 - **Impact**: Writing Svelte 4 syntax causes deprecation warnings; new projects require runes
 - **Lookup**: `npm view svelte version`
 
 ### Nuxt 4 — 2025
-- **Wrong (training data)**: Nuxt 3 is the latest
-- **Correct (current)**:
+- **Outdated**: Nuxt 3 is the latest
+- **Current**:
   - Nuxt 4
   - Vue 3 based (maintained)
 - **Impact**: Low; Nuxt 3 code is mostly compatible
 - **Lookup**: `npm view nuxt version`
 
 ### Astro 5 — 2024
-- **Wrong (training data)**: Astro 3 or 4 is the latest
-- **Correct (current)**:
+- **Outdated**: Astro 3 or 4 is the latest
+- **Current**:
   - Astro 5
   - Content Layer API improvements
   - Server Islands

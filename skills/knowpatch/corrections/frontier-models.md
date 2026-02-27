@@ -20,8 +20,8 @@ last_updated: "2026-02-27"
 ---
 
 ### Anthropic Claude — 2026-02
-- **Wrong (training data)**: Claude 3.5 Sonnet is the latest/best model, model ID `claude-3-5-sonnet-20241022`
-- **Correct (current)**:
+- **Outdated**: Claude 3.5 Sonnet is the latest/best model, model ID `claude-3-5-sonnet-20241022`
+- **Current**:
   - `claude-opus-4-6` — Highest capability
   - `claude-sonnet-4-6` — Balanced (performance/cost)
   - `claude-haiku-4-5` — Lightweight/fast (`claude-haiku-4-5-20251001`)
@@ -31,8 +31,8 @@ last_updated: "2026-02-27"
 - **Lookup**: `npm view @anthropic-ai/sdk version`
 
 ### OpenAI GPT-5 Family — 2026-02
-- **Wrong (training data)**: GPT-4 Turbo, GPT-4o are the latest/best models
-- **Correct (current)**:
+- **Outdated**: GPT-4 Turbo, GPT-4o are the latest/best models
+- **Current**:
   - `gpt-5.3-codex` — Best agentic coding model (2026-02-05)
   - `gpt-5.3-codex-spark` — Ultra-fast real-time coding, Cerebras-powered (2026-02-12), text-only 128k
   - `gpt-5.2` — Professional work (2025-12-11)
@@ -48,8 +48,8 @@ last_updated: "2026-02-27"
 - **Lookup**: `npm view openai version`
 
 ### Google Gemini 3 Family — 2026-02
-- **Wrong (training data)**: Gemini 1.5 Pro is the latest
-- **Correct (current)**:
+- **Outdated**: Gemini 1.5 Pro is the latest
+- **Current**:
   - Gemini 3.1 Pro (Preview) — Highest capability, 1M input tokens, 64k output tokens
   - Gemini 3 Pro — Stable version
   - Gemini 3 Flash — Fast variant
@@ -60,7 +60,7 @@ last_updated: "2026-02-27"
 - **Impact**: Using Gemini 1.5 models results in legacy performance; failing to inform about video/audio input support
 - **Lookup**: `npm view @google/genai version`
 
-### Multimodal Input Comparison — 2026-02
+## Multimodal Input Comparison — 2026-02
 
 | Model | Text | Image | Video | Audio | PDF |
 |-------|------|-------|-------|-------|-----|

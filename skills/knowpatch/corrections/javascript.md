@@ -17,8 +17,8 @@ last_updated: "2026-02-24"
 ---
 
 ### Zod 4 — 2025
-- **Wrong (training data)**: Zod 3.x with `z.string().email()`, `z.string().uuid()` method chaining
-- **Correct (current)**: Zod 4
+- **Outdated**: Zod 3.x with `z.string().email()`, `z.string().uuid()` method chaining
+- **Current**: Zod 4
 
 **Key API change — string format validators moved to top-level:**
 
@@ -52,7 +52,7 @@ last_updated: "2026-02-24"
 | `z.object().strict()` | `z.strictObject()` | Method deprecated |
 | `z.object().passthrough()` | `z.looseObject()` | Method deprecated |
 | `z.object().merge(other)` | `.extend(other.shape)` or `{...A.shape, ...B.shape}` | `.merge()` deprecated |
-| `z.object().deepPartial()` | Removed | No alternative; considered anti-pattern |
+| `z.object().deepPartial()` | Removed | Removed in Zod 4 |
 | `z.object().strip()` | Removed | Default behavior, unnecessary |
 
 **Error handling changes:**
@@ -87,8 +87,8 @@ last_updated: "2026-02-24"
 ---
 
 ### React 19 — 2024-12
-- **Wrong (training data)**: React 18 is the latest, `@types/react` must be installed separately, `forwardRef` is required
-- **Correct (current)**:
+- **Outdated**: React 18 is the latest, `@types/react` must be installed separately, `forwardRef` is required
+- **Current**:
   - React 19
   - `@types/react` is **not needed** as a separate install (built into React 19)
   - `forwardRef` is **unnecessary** — `ref` is passed as a regular prop
@@ -104,8 +104,8 @@ last_updated: "2026-02-24"
 ---
 
 ### TypeScript 5.9 — 2025
-- **Wrong (training data)**: TypeScript 5.3-5.5 is the latest
-- **Correct (current)**:
+- **Outdated**: TypeScript 5.3-5.5 is the latest
+- **Current**:
   - TypeScript 5.9
   - `moduleResolution: "bundler"` now the default
   - `satisfies` operator stabilized

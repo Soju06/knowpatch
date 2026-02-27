@@ -19,18 +19,18 @@ last_updated: "2026-02-24"
 ---
 
 ### shadcn — 2025-10
-- **Wrong (training data)**: Package name `shadcn-ui`, install command `npx shadcn-ui@latest init`
-- **Correct (current)**:
+- **Outdated**: Package name `shadcn-ui`, install command `npx shadcn-ui@latest init`
+- **Current**:
   - Package name: `shadcn`
   - Install: `npx shadcn@latest init`
-  - The `shadcn-ui` package is discontinued — **it does not work**
+  - The `shadcn-ui` package is discontinued — use `shadcn` package instead
   - shadcn dropped Tailwind CSS 3 support — **Tailwind 4 is required**
 - **Impact**: `npx shadcn-ui@latest` fails or installs a broken version. Using with Tailwind 3 causes incompatibility.
 - **Lookup**: `npm view shadcn version`
 
 ### Tailwind CSS v4 — 2025-03
-- **Wrong (training data)**: Tailwind v3 is the current version, configured via `tailwind.config.js`, requires PostCSS plugin, `content: [...]` array is mandatory
-- **Correct (current)**:
+- **Outdated**: Tailwind v3 is the current version, configured via `tailwind.config.js`, requires PostCSS plugin, `content: [...]` array is mandatory
+- **Current**:
   - Tailwind CSS v4
   - CSS-first configuration: use `@theme` directive directly in CSS files
   - `tailwind.config.js` is unnecessary (for new projects)
@@ -43,15 +43,15 @@ last_updated: "2026-02-24"
 - **Lookup**: `npm view tailwindcss version`
 
 ### ESLint 10 — 2026-01
-- **Wrong (training data)**: ESLint 8/9, config files `.eslintrc.js` / `.eslintrc.json` / `.eslintrc.yaml`
-- **Correct (current)**:
+- **Outdated**: ESLint 8/9, config files `.eslintrc.js` / `.eslintrc.json` / `.eslintrc.yaml`
+- **Current**:
   - ESLint 10
-  - `.eslintrc.*` files are **completely removed** (not deprecated — **removed**)
+  - `.eslintrc.*` files are no longer supported — use `eslint.config.js`
   - **Only config format**: `eslint.config.js` (flat config)
   - `.eslintignore` → `ignores` array inside config
   - `--env` CLI flag removed
-  - `/* eslint-env browser */` comments → **cause errors**
-  - `LegacyESLint` API completely removed
+  - `/* eslint-env browser */` comments → no longer recognized
+  - `LegacyESLint` API removed
   - Requires Node.js 20.19.0+ (Node 18 is unsupported)
   - Monorepos: config search is based on file directory (not CWD)
   - JSX reference tracking improved (`no-unused-vars` accuracy for JSX)
@@ -61,8 +61,8 @@ last_updated: "2026-02-24"
 - **Lookup**: `npm view eslint version`
 
 ### Create React App — Deprecated
-- **Wrong (training data)**: `npx create-react-app my-app` for React project creation
-- **Correct (current)**:
+- **Outdated**: `npx create-react-app my-app` for React project creation
+- **Current**:
   - Create React App (CRA) is **officially deprecated**
   - Alternative: `npm create vite@latest` (Vite-based)
   - Or: Next.js (`npx create-next-app@latest`), Remix
@@ -71,8 +71,8 @@ last_updated: "2026-02-24"
 - **Lookup**: `npm view create-react-app version` (to verify last release date)
 
 ### Vite 7 — 2025
-- **Wrong (training data)**: Vite 5 is the latest
-- **Correct (current)**:
+- **Outdated**: Vite 5 is the latest
+- **Current**:
   - Vite 7
   - Environment API introduced (from v6)
   - Create projects with `npm create vite@latest`

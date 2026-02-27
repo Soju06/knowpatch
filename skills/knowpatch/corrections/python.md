@@ -19,8 +19,8 @@ last_updated: "2026-02-24"
 ---
 
 ### uv — 2025
-- **Wrong (training data)**: `pip install` + `python -m venv` or `poetry` is the standard for Python package management
-- **Correct (current)**:
+- **Outdated**: `pip install` + `python -m venv` or `poetry` is the standard for Python package management
+- **Current**:
   - uv — Mainstream replacement for pip/poetry
   - Project init: `uv init`
   - Add dependency: `uv add fastapi`
@@ -33,19 +33,19 @@ last_updated: "2026-02-24"
 - **Lookup**: `pip index versions uv | head -1`
 
 ### Django 6 — 2025
-- **Wrong (training data)**: Django 4.x or 5.x is the latest
-- **Correct (current)**:
+- **Outdated**: Django 4.x or 5.x is the latest
+- **Current**:
   - Django 6.0
 - **Impact**: Django 4/5 code is mostly compatible, but installing legacy versions for new projects is inappropriate
 - **Lookup**: `pip index versions django | head -1`
 
 ### Pydantic v2 — 2023-07
-- **Wrong (training data)**: Pydantic v1 style usage
+- **Outdated**: Pydantic v1 style usage
   - `class Config:` inner class
   - `@validator` decorator
   - `@root_validator` decorator
   - `from pydantic import validator`
-- **Correct (current)**:
+- **Current**:
   - Pydantic v2
   - `model_config = ConfigDict(...)` (replaces `class Config`)
   - `@field_validator` decorator
@@ -56,8 +56,8 @@ last_updated: "2026-02-24"
 - **Lookup**: `pip index versions pydantic | head -1`
 
 ### ruff — 2024
-- **Wrong (training data)**: `flake8` + `black` + `isort` combo is the Python linting standard
-- **Correct (current)**:
+- **Outdated**: `flake8` + `black` + `isort` combo is the Python linting standard
+- **Current**:
   - ruff — All-in-one replacement for flake8 + black + isort
   - Linting: `ruff check .`
   - Formatting: `ruff format .`
@@ -68,8 +68,8 @@ last_updated: "2026-02-24"
 - **Lookup**: `pip index versions ruff | head -1`
 
 ### FastAPI — 2024
-- **Wrong (training data)**: FastAPI 0.90-0.100 range is the latest
-- **Correct (current)**:
+- **Outdated**: FastAPI 0.90-0.100 range is the latest
+- **Current**:
   - FastAPI
   - Full Pydantic v2 support
   - `lifespan` event handler (on_event is deprecated)
