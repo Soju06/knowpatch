@@ -259,16 +259,19 @@ export async function updateCommand(
   const scope: Scope = (options.scope as Scope | undefined) ?? "user";
 
   // CLI version check
-  if (isInteractive()) {
-    const spinner = startSpinner("Checking for updates...");
-    const newer = await checkForUpdate(currentVersion);
-    spinner.stop();
+  const spinner = isInteractive()
+    ? startSpinner("Checking for updates...")
+    : null;
+  const newer = await checkForUpdate(currentVersion);
+  spinner?.stop();
 
-    if (newer) {
-      console.log(
-        `  ${ICONS.drift} ${COLORS.warn(`New version available: ${currentVersion} → ${newer}`)}`,
-      );
-      const updateCmd = getUpdateCommand();
+  if (newer) {
+    const updateCmd = getUpdateCommand();
+    console.log(
+      `  ${ICONS.drift} ${COLORS.warn(`New version available: ${currentVersion} → ${newer}`)}`,
+    );
+
+    if (isInteractive()) {
       const doUpdate = await confirm({
         message: `Update knowpatch CLI? (${updateCmd})`,
         default: true,
@@ -284,8 +287,10 @@ export async function updateCommand(
           );
         }
       }
-      console.log();
+    } else {
+      console.log(`    Run ${COLORS.info(updateCmd)} to update`);
     }
+    console.log();
   }
 
   console.log("  Checking installation...");

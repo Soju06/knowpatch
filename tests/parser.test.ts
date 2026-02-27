@@ -5,6 +5,7 @@ const sampleContent = `---
 ecosystem: test-ecosystem
 description: Test corrections file
 tags: [react, typescript, test]
+version: "0.4.0"
 last_updated: "2026-02-24"
 ---
 
@@ -15,6 +16,16 @@ Some markdown body content here.
 ### React — 2026-02
 - **Wrong (training data)**: React 18 is the latest
 - **Correct (current)**: React 19
+`;
+
+const sampleContentNoVersion = `---
+ecosystem: legacy-ecosystem
+description: Legacy file without version
+tags: [legacy]
+last_updated: "2025-01-01"
+---
+
+# Legacy
 `;
 
 const noFrontmatterContent = `# Plain Markdown
@@ -30,8 +41,17 @@ describe("parseFrontmatter", () => {
     expect(frontmatter?.ecosystem).toBe("test-ecosystem");
     expect(frontmatter?.description).toBe("Test corrections file");
     expect(frontmatter?.tags).toEqual(["react", "typescript", "test"]);
+    expect(frontmatter?.version).toBe("0.4.0");
     expect(frontmatter?.last_updated).toBe("2026-02-24");
     expect(body).toContain("# Test Corrections");
+  });
+
+  test("returns undefined version for frontmatter without version", () => {
+    const { frontmatter } = parseFrontmatter(sampleContentNoVersion);
+
+    expect(frontmatter).not.toBeNull();
+    expect(frontmatter?.version).toBeUndefined();
+    expect(frontmatter?.ecosystem).toBe("legacy-ecosystem");
   });
 
   test("returns null frontmatter for content without frontmatter", () => {
@@ -49,7 +69,15 @@ describe("parseCorrectionFile", () => {
     expect(result.ecosystem).toBe("test-ecosystem");
     expect(result.file).toBe("test.md");
     expect(result.tags).toEqual(["react", "typescript", "test"]);
+    expect(result.version).toBe("0.4.0");
     expect(result.body).toContain("# Test Corrections");
+  });
+
+  test("parses a file without version field", () => {
+    const result = parseCorrectionFile("legacy.md", sampleContentNoVersion);
+
+    expect(result.ecosystem).toBe("legacy-ecosystem");
+    expect(result.version).toBeUndefined();
   });
 
   test("handles file without frontmatter gracefully", () => {

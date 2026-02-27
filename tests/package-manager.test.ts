@@ -2,6 +2,7 @@ import { afterEach, describe, expect, test } from "bun:test";
 import {
   detectPackageManager,
   getUpdateCommand,
+  isEphemeral,
 } from "../src/core/package-manager.js";
 
 describe("detectPackageManager", () => {
@@ -72,5 +73,12 @@ describe("getUpdateCommand", () => {
   test("yarn PM produces yarn global upgrade command", () => {
     process.env.npm_config_user_agent = "yarn/4.0.0";
     expect(getUpdateCommand()).toBe("yarn global upgrade knowpatch");
+  });
+});
+
+describe("isEphemeral", () => {
+  test("returns false for non-ephemeral paths", () => {
+    // Test environment runs from the project directory, not a temp cache
+    expect(isEphemeral()).toBe(false);
   });
 });

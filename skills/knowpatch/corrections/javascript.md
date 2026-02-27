@@ -2,6 +2,7 @@
 ecosystem: javascript
 description: JS/TS library API changes
 tags: [zod, react, typescript, npm, bun, deno, pnpm, esm, types, javascript, js, ts]
+version: "0.4.0" # x-release-please-version
 last_updated: "2026-02-24"
 ---
 

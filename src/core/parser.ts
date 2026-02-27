@@ -7,6 +7,7 @@ export interface CorrectionFile {
   ecosystem: string;
   description: string;
   tags: string[];
+  version?: string;
   last_updated: string;
   /** Raw markdown body below frontmatter */
   body: string;
@@ -18,6 +19,7 @@ interface Frontmatter {
   ecosystem: string;
   description: string;
   tags: string[];
+  version?: string;
   last_updated: string;
 }
 
@@ -58,6 +60,7 @@ export function parseCorrectionFile(
     ecosystem: frontmatter.ecosystem,
     description: frontmatter.description,
     tags: frontmatter.tags ?? [],
+    version: frontmatter.version,
     last_updated: frontmatter.last_updated,
     body,
     file: filename,

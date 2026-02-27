@@ -2,6 +2,7 @@
 ecosystem: frameworks
 description: Framework major version breaking changes
 tags: [next, nextjs, svelte, vue, nuxt, astro, remix, angular, framework]
+version: "0.4.0" # x-release-please-version
 last_updated: "2026-02-24"
 ---
 
