@@ -1,6 +1,6 @@
 {
   "name": "knowpatch",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "LLM knowledge cutoff compensator for Claude Code. Corrects outdated versions, deprecated APIs, renamed packages.",
   "type": "module",
   "bin": {
