@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.1](https://github.com/Soju06/knowpatch/compare/v0.4.0...v0.4.1) (2026-02-27)
+
+
+### Bug Fixes
+
+* add update UX, file-level version patching, and v0.3→v0.4 migration ([be3a963](https://github.com/Soju06/knowpatch/commit/be3a963161939f1a525a3ee3d767d2aec5a30c29))
+* add update UX, file-level version patching, and v0.3→v0.4 migration ([5fd78bd](https://github.com/Soju06/knowpatch/commit/5fd78bd9a193afd7f0ae086c96d695a99c90591a))
+
 ## [0.4.0](https://github.com/Soju06/knowpatch/compare/v0.3.0...v0.4.0) (2026-02-27)
 
 

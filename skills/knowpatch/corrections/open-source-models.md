@@ -2,7 +2,7 @@
 ecosystem: open-source-models
 description: Open-source frontier LLMs for coding, agentic tasks, and self-hosting (2026)
 tags: [open-source, self-hosted, coding-model, llama, deepseek, mistral, kimi, minimax, glm, qwen, vllm, sglang, swe-bench, moe, model, llm, ai]
-version: "0.4.0" # x-release-please-version
+version: "0.4.1" # x-release-please-version
 last_updated: "2026-02-27"
 ---
 

@@ -2,7 +2,7 @@
 ecosystem: macos
 description: macOS 26 version naming, Liquid Glass, Swift 6.2, system toolchain, Apple framework changes
 tags: [macos, tahoe, xcode, swift, swiftui, liquid-glass, metal, rosetta, intel, apple-silicon, foundation-models]
-version: "0.4.0" # x-release-please-version
+version: "0.4.1" # x-release-please-version
 last_updated: "2026-02-27"
 ---
 

@@ -2,7 +2,7 @@
 ecosystem: python
 description: Python ecosystem tool/library changes
 tags: [pip, uv, poetry, pydantic, fastapi, django, ruff, flask, sqlalchemy, python]
-version: "0.4.0" # x-release-please-version
+version: "0.4.1" # x-release-please-version
 last_updated: "2026-02-24"
 ---
 
