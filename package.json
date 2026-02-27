@@ -20,6 +20,10 @@
     "bin/",
     "skills/"
   ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
   "keywords": [
     "claude-code",
     "skill",
