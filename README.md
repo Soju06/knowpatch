@@ -33,26 +33,9 @@ LLM knowledge cutoff compensator for AI coding agents. Corrects outdated version
 npx knowpatch
 ```
 
-<pre>
-  <b>Knowpatch v0.1.0</b>
-  <i>Corrects outdated APIs, renamed packages, and deprecated patterns for AI coding agents</i>
+![interactive](docs/screenshots/interactive.png)
 
-? Scope:
-❯ User (~/…)
-  Project (./)
-  ← Exit
-
-? Select platforms:
-◉ Claude Code
-◯ Codex CLI
-◯ Gemini CLI
-
-  <span style="color:green">✓</span> Canonical skill installed
-  <span style="color:green">✓</span> Claude Code skill linked
-  <span style="color:green">✓</span> Claude Code hook registered
-</pre>
-
-Done. Corrections start injecting into your agent automatically.
+Select platforms, done. Corrections start injecting into your agent automatically.
 
 ## How It Works
 
