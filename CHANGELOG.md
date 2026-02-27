@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.4.0](https://github.com/Soju06/knowpatch/compare/v0.3.0...v0.4.0) (2026-02-27)
+
+
+### Features
+
+* **hook:** relocate detect.js to skill resource for team compatibility ([8a9e01f](https://github.com/Soju06/knowpatch/commit/8a9e01febc20ebb9a278143c283bd0d7b29843bf))
+
+
+### Bug Fixes
+
+* **ci:** update build artifact checks for relocated detect.js ([e492a71](https://github.com/Soju06/knowpatch/commit/e492a712c0bb62c9f7764ad825e9b7a8529e1eb3))
+* **hook:** relocate detect.js to skill resource for team compatibility ([9ab62e3](https://github.com/Soju06/knowpatch/commit/9ab62e3f4a005635742e3fde00f76ee7c58dfba5))
+
 ## [0.3.0](https://github.com/Soju06/knowpatch/compare/v0.2.0...v0.3.0) (2026-02-27)
 
 
