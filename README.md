@@ -1,78 +1,74 @@
-# Knowpatch
+<!--
+About
+LLM knowledge cutoff compensator for AI coding agents — corrects outdated versions, deprecated APIs, renamed packages, and removed CLI commands
 
-LLM knowledge cutoff compensator for Claude Code. Corrects outdated versions, deprecated APIs, renamed packages, and removed CLI commands.
+Topics
+typescript bun cli claude-code codex gemini skill knowledge-cutoff llm version deprecated-api breaking-changes
 
-## Why
+Resources
+-->
 
-LLM training data lags 1-2 years behind reality. When Claude Code generates `package.json`, scaffolds a project, or suggests an install command, it confidently uses **outdated** version numbers and **deprecated** APIs.
+# knowpatch
 
-Knowpatch fixes this by providing **knowledge corrections** — pre-loaded fixes for breaking changes (`shadcn-ui` → `shadcn`, `z.string().email()` → `z.email()`, `.eslintrc` → `eslint.config.js`, etc.) while enforcing that version numbers are always verified via the package manager directly.
+LLM knowledge cutoff compensator for AI coding agents. Corrects outdated versions, deprecated APIs, renamed packages, and removed CLI commands — so your agent stops confidently using last year's code.
 
-## Install
+## Quick Start
 
 ```bash
-# Install globally
-npm install -g knowpatch
-
-# Or run directly
 npx knowpatch
 ```
 
-### Register as Claude Code skill
+```
+  Knowpatch v0.1.0
 
-```bash
-knowpatch install            # user-level (default)
-knowpatch install --scope project  # project-level
+? Scope:
+❯ User (~/…)
+  Project (./)
+  ← Exit
+
+? Select platforms:
+◉ Claude Code
+◯ Codex CLI
+◯ Gemini CLI
+
+  ✔ Canonical skill installed
+  ✔ Claude Code skill linked
+  ✔ Claude Code hook registered
 ```
 
-This creates a symlink so Claude Code automatically loads the skill.
+Done. Corrections start injecting into your agent automatically.
 
-## CLI Commands
+## What It Corrects
 
-| Command | Description |
-|---------|-------------|
-| `knowpatch install` | Install the skill by creating a symlink |
-| `knowpatch uninstall` | Remove the skill symlink |
+| Wrong (training data) | Correct (current) |
+|-----------------------|-------------------|
+| `npx shadcn-ui@latest` | `npx shadcn@latest` |
+| `z.string().email()` | `z.email()` |
+| `.eslintrc` | `eslint.config.js` |
+| `claude-3-opus-20240229` | `claude-opus-4-6` |
 
-Running `knowpatch` with no arguments opens an interactive menu.
-
-## Corrections
-
-Corrections are organized by category in `skills/knowpatch/corrections/`:
+<details>
+<summary>All correction categories</summary>
+<br>
 
 | File | Covers |
 |------|--------|
-| `ai-models.md` | Claude, GPT, Gemini model IDs and naming |
-| `cli-tools.md` | shadcn, tailwind, eslint, vite CLI changes |
+| `frontier-models.md` | Claude, GPT, Gemini model IDs |
+| `open-source-models.md` | Llama, Mistral, DeepSeek, Qwen, GLM, Kimi |
+| `cli-tools.md` | shadcn, tailwind, eslint, vite |
 | `frameworks.md` | Next.js, Svelte, Nuxt, Django, FastAPI |
-| `javascript.md` | Zod, React, TypeScript API changes |
-| `platforms.md` | Supabase, Vercel, Cloudflare |
+| `javascript.md` | Zod, React, TypeScript |
 | `python.md` | Pydantic, Ruff, uv, pip |
-| `runtimes.md` | Node.js, Bun, Deno, Python versions |
+| `platforms.md` | Supabase, Vercel, Cloudflare |
+| `runtimes.md` | Node.js, Bun, Deno, Python |
 
-Each entry follows a standard format:
-
-```markdown
-### {Topic} — {YYYY-MM}
-- **Wrong (training data)**: What the model would answer
-- **Correct (current)**: Actual current state
-- **Impact**: What goes wrong if outdated info is used
-- **Lookup**: Package manager verification command
-```
+</details>
 
 ## Development
 
 ```bash
-# Install dependencies
-bun install
-
-# Run in dev mode
-bun run dev
-
-# Build
+bun install && bun run dev
 bun run build
-
-# Run tests
 bun test
 ```
 

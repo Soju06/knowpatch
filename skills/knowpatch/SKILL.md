@@ -4,13 +4,15 @@ description: >
   LLM knowledge cutoff compensator — provides knowledge corrections for breaking changes
   and API drift that may differ from training data.
   Corrections cover: renamed packages (shadcn-ui→shadcn), changed APIs (z.string().email()→z.email()),
-  new config formats (.eslintrc→eslint.config.js), current model IDs (Claude Opus 4.6, GPT-5.3, GLM-5, MiniMax M2.5, Kimi K2.5, DeepSeek V3.2, Qwen 3.5).
+  new config formats (.eslintrc→eslint.config.js), current model IDs (Claude Opus 4.6, GPT-5.3, GLM-5, MiniMax M2.5, Kimi K2.5, DeepSeek V3.2, Qwen 3.5),
+  Apple platform changes (macOS 26 Tahoe, Liquid Glass, Swift 6.2, Metal 4).
   Version numbers are NOT cached — always verify via package manager (npm view, pip index versions).
   Useful for tasks involving: install, add, create, init, scaffold, upgrade, migrate, latest, version,
   dependency, shadcn, tailwind, vite, zod, eslint, react, next, svelte, nuxt, django, fastapi, pydantic,
   ruff, uv, claude, gpt, gemini, openai, anthropic, kimi, minimax, glm, deepseek, qwen, llama, mistral,
   open-source, self-hosted, recommend, model, llm, sdk, npm, pip, cargo, bun,
-  node, python, typescript, supabase, jwks, pyproject.toml, package.json, requirements.txt.
+  node, python, typescript, supabase, jwks, pyproject.toml, package.json, requirements.txt,
+  macos, xcode, swift, swiftui, liquid-glass, metal, apple, ios, rosetta, foundation-models.
 ---
 
 # Knowpatch
@@ -108,6 +110,7 @@ Corrections provide knowledge that **version numbers alone cannot reveal**:
 - **AI model IDs**: Cannot be looked up via package managers — corrections are the source of truth
 - **Open-source model recommendations**: Training data recommends outdated models (Llama, Mistral) — corrections provide current frontier options with selection guide
 - **Platform API changes**: Supabase key renames, JWT verification pattern changes
+- **Apple platform changes**: macOS version naming (15→26), Liquid Glass design system, Swift concurrency model, Metal API generation
 
 ### Check Corrections When:
 - Installing or adding packages
@@ -117,6 +120,8 @@ Corrections provide knowledge that **version numbers alone cannot reveal**:
 - Recommending open-source or self-hosted LLMs
 - Using CLI tools (shadcn, tailwind, eslint, vite)
 - Upgrading or migrating dependencies
+- Writing Swift/SwiftUI code or targeting Apple platforms
+- Referencing macOS version numbers or deployment targets
 
 ---
 
