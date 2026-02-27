@@ -51,6 +51,12 @@ async function fetchLatest(): Promise<string | null> {
   }
 }
 
+/** Return the cached latest version (available after checkForUpdate has run). */
+export async function getLatestVersion(): Promise<string | null> {
+  const cache = await readCache();
+  return cache?.latestVersion ?? null;
+}
+
 /** Check npm registry for a newer version. Returns newer version string or null. */
 export async function checkForUpdate(
   currentVersion: string,
