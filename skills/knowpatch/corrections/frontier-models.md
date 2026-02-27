@@ -1,19 +1,21 @@
 ---
-ecosystem: ai-models
-description: AI model names, IDs, SDK versions, multimodal support
+ecosystem: frontier-models
+description: Proprietary frontier AI model names, IDs, SDK versions, multimodal support
 tags: [claude, gpt, gemini, openai, anthropic, model, llm, sdk, ai]
-last_updated: "2026-02-24"
+last_updated: "2026-02-27"
 ---
 
-# AI Models — Version Corrections
+# Frontier (Proprietary) Models — Version Corrections
 
-> Last updated: 2026-02-24
+> Last updated: 2026-02-27
 
 ## Table of Contents
 - [Anthropic Claude](#anthropic-claude)
 - [OpenAI GPT-5 Family](#openai-gpt-5-family)
 - [Google Gemini 3 Family](#google-gemini-3-family)
 - [Multimodal Input Comparison](#multimodal-input-comparison)
+
+> Open-source models → see `open-source-models.md` (GLM-5, MiniMax M2.5, Kimi K2.5, DeepSeek V3.2, Qwen 3.5)
 
 ---
 
@@ -58,8 +60,6 @@ last_updated: "2026-02-24"
 - **Impact**: Using Gemini 1.5 models results in legacy performance; failing to inform about video/audio input support
 - **Lookup**: `npm view @google/genai version`
 
----
-
 ### Multimodal Input Comparison — 2026-02
 
 | Model | Text | Image | Video | Audio | PDF |
@@ -73,5 +73,10 @@ last_updated: "2026-02-24"
 | GPT-5.3-Codex-Spark | O | X | X | X | X |
 | Gemini 3.1 Pro | O | O | O | O | O |
 | Gemini 3 Pro/Flash | O | O | O | O | O |
+| Kimi K2.5 | O | O | X | X | X |
+| MiniMax M2.5 | O | X | X | X | X |
+| GLM-5 | O | X | X | X | X |
+| DeepSeek V3.2 | O | X | X | X | X |
+| Qwen 3.5 | O | O | X | X | X |
 
-Note: GPT-5.3-Codex variants are text-only, specialized for agentic coding. Gemini is the only family supporting video + audio input.
+Note: GPT-5.3-Codex, MiniMax M2.5, GLM-5, DeepSeek V3.2 are text-only. Kimi K2.5, Qwen 3.5 support native vision. Gemini is the only family supporting video + audio input.

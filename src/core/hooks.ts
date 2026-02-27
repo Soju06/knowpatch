@@ -1,6 +1,11 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
-import { getHookCommand, getSettingsPath, type Scope } from "./paths.js";
+import {
+  getHookCommand,
+  getPlatformSettingsPath,
+  type Scope,
+} from "./paths.js";
+import type { PlatformConfig } from "./platforms.js";
 
 interface HookEntry {
   type: "command";
@@ -31,8 +36,7 @@ function isOurHook(matcher: HookMatcher, hookCmd: string): boolean {
   );
 }
 
-async function readSettings(scope: Scope): Promise<Settings> {
-  const path = getSettingsPath(scope);
+async function readSettings(path: string): Promise<Settings> {
   try {
     const raw = await readFile(path, "utf-8");
     return JSON.parse(raw) as Settings;
@@ -41,24 +45,37 @@ async function readSettings(scope: Scope): Promise<Settings> {
   }
 }
 
-async function writeSettings(scope: Scope, settings: Settings): Promise<void> {
-  const path = getSettingsPath(scope);
+async function writeSettings(path: string, settings: Settings): Promise<void> {
   await mkdir(dirname(path), { recursive: true });
   await writeFile(path, `${JSON.stringify(settings, null, 2)}\n`, "utf-8");
 }
 
-/** Check if the knowpatch hook is already installed */
-export async function isHookInstalled(scope: Scope): Promise<boolean> {
-  const settings = await readSettings(scope);
+/** Check if the knowpatch hook is installed for a platform */
+export async function isPlatformHookInstalled(
+  platform: PlatformConfig,
+  scope: Scope,
+): Promise<boolean> {
+  if (platform.hookType === "none") return false;
+  const settingsPath = getPlatformSettingsPath(platform, scope);
+  if (!settingsPath) return false;
+
+  const settings = await readSettings(settingsPath);
   const hookCmd = getHookCommand();
   const entries = settings.hooks?.UserPromptSubmit ?? [];
   return entries.some((m) => isOurHook(m, hookCmd));
 }
 
-/** Add the knowpatch hook to settings.json */
-export async function installHook(scope: Scope): Promise<boolean> {
+/** Add the knowpatch hook to a platform's settings.json */
+export async function installPlatformHook(
+  platform: PlatformConfig,
+  scope: Scope,
+): Promise<boolean> {
+  if (platform.hookType === "none") return false;
+  const settingsPath = getPlatformSettingsPath(platform, scope);
+  if (!settingsPath) return false;
+
   const hookCmd = getHookCommand();
-  const settings = await readSettings(scope);
+  const settings = await readSettings(settingsPath);
 
   if (!settings.hooks) {
     settings.hooks = {};
@@ -67,7 +84,6 @@ export async function installHook(scope: Scope): Promise<boolean> {
     settings.hooks.UserPromptSubmit = [];
   }
 
-  // Already installed — skip
   if (settings.hooks.UserPromptSubmit.some((m) => isOurHook(m, hookCmd))) {
     return false;
   }
@@ -77,14 +93,21 @@ export async function installHook(scope: Scope): Promise<boolean> {
     hooks: [{ type: "command", command: hookCmd }],
   });
 
-  await writeSettings(scope, settings);
+  await writeSettings(settingsPath, settings);
   return true;
 }
 
-/** Remove the knowpatch hook from settings.json */
-export async function uninstallHook(scope: Scope): Promise<boolean> {
-  const settings = await readSettings(scope);
+/** Remove the knowpatch hook from a platform's settings.json */
+export async function uninstallPlatformHook(
+  platform: PlatformConfig,
+  scope: Scope,
+): Promise<boolean> {
+  if (platform.hookType === "none") return false;
+  const settingsPath = getPlatformSettingsPath(platform, scope);
+  if (!settingsPath) return false;
+
   const hookCmd = getHookCommand();
+  const settings = await readSettings(settingsPath);
   const hooks = settings.hooks;
   const entries = hooks?.UserPromptSubmit;
   if (!hooks || !entries) return false;
@@ -94,7 +117,6 @@ export async function uninstallHook(scope: Scope): Promise<boolean> {
 
   hooks.UserPromptSubmit = filtered;
 
-  // Clean up empty structures
   if (hooks.UserPromptSubmit.length === 0) {
     delete hooks.UserPromptSubmit;
   }
@@ -102,6 +124,6 @@ export async function uninstallHook(scope: Scope): Promise<boolean> {
     delete settings.hooks;
   }
 
-  await writeSettings(scope, settings);
+  await writeSettings(settingsPath, settings);
   return true;
 }

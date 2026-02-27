@@ -57,6 +57,16 @@ const KEYWORDS = [
   "gemini",
   "openai",
   "anthropic",
+  "kimi",
+  "minimax",
+  "glm",
+  "deepseek",
+  "qwen",
+  "llama",
+  "mistral",
+  "open-source",
+  "self-hosted",
+  "recommend",
   "model",
   "llm",
   "sdk",
@@ -91,9 +101,9 @@ async function main() {
   if (matched) {
     console.log(
       [
-        "This task appears to involve package versions or tool configurations.",
+        "This task appears to involve package versions, tool configurations, or AI model recommendations.",
         "The knowpatch skill has up-to-date corrections for common version drift",
-        "(e.g., renamed packages, changed APIs, new model IDs).",
+        "(e.g., renamed packages, changed APIs, new model IDs, current open-source frontier models).",
         'Consider using Skill("knowpatch") to check for relevant corrections before proceeding.',
       ].join("\n"),
     );

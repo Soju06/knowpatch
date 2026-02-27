@@ -1,65 +1,119 @@
 import { rm } from "node:fs/promises";
-import { confirm } from "@inquirer/prompts";
-import { uninstallHook } from "../core/hooks.js";
+import { checkbox, confirm } from "@inquirer/prompts";
+import { uninstallPlatformHook } from "../core/hooks.js";
 import {
-  getSkillTargetPath,
-  isLinkedToUs,
-  pathExists,
+  getAgentsSkillPath,
+  getPlatformSkillPath,
   type Scope,
 } from "../core/paths.js";
+import type { PlatformConfig } from "../core/platforms.js";
+import { detectInstallation } from "../core/status.js";
 import { isInteractive } from "../ui/interactive.js";
 import { COLORS, ICONS } from "../ui/palette.js";
-import { startSpinner } from "../ui/spinner.js";
 
 interface UninstallOptions {
   scope?: string;
+  platforms?: string;
 }
 
 export async function uninstallCommand(
   options: UninstallOptions,
 ): Promise<void> {
-  const scope: Scope = (options.scope as Scope) ?? "user";
-  const target = getSkillTargetPath(scope);
+  const scope: Scope = (options.scope as Scope | undefined) ?? "user";
+  const status = await detectInstallation(scope);
 
-  if (!(await pathExists(target))) {
+  const installed = status.platforms.filter((ps) => ps.installed);
+  const hasCanonical =
+    status.canonical.valid || status.canonical.isLegacySymlink;
+  if (installed.length === 0 && !hasCanonical) {
     console.log(
-      `  ${ICONS.ok} ${COLORS.dim("Nothing to uninstall — symlink does not exist.")}`,
+      `  ${ICONS.ok} ${COLORS.dim("Nothing to uninstall — no installation found.")}`,
     );
     return;
   }
 
-  if (!(await isLinkedToUs(target))) {
+  // Show current state
+  console.log();
+  console.log("  Current installation:");
+  console.log(`  ${ICONS.bullet} Scope: ${scope}`);
+  if (installed.length > 0) {
     console.log(
-      `  ${ICONS.error} ${COLORS.error("Target exists but does not point to this package.")}`,
+      `  ${ICONS.bullet} Platforms: ${installed.map((ps) => `${ps.platform.displayName} ${ICONS.ok}`).join(", ")}`,
     );
-    console.log(
-      `  ${COLORS.dim("Refusing to remove — manual cleanup required.")}`,
-    );
-    process.exit(1);
+  }
+  console.log();
+
+  let platformsToRemove: PlatformConfig[];
+
+  if (options.platforms) {
+    const ids = options.platforms.split(",").map((s) => s.trim());
+    platformsToRemove = installed
+      .filter((ps) => ids.includes(ps.platform.id))
+      .map((ps) => ps.platform);
+  } else if (isInteractive() && installed.length > 0) {
+    platformsToRemove = await checkbox({
+      message: "Remove from which platforms?",
+      choices: installed.map((ps) => ({
+        name: ps.platform.displayName,
+        value: ps.platform,
+        checked: true,
+      })),
+    });
+  } else {
+    platformsToRemove = installed.map((ps) => ps.platform);
   }
 
-  // Confirm in interactive mode
-  if (isInteractive()) {
-    const proceed = await confirm({
-      message: `Remove skill symlink at ${target}?`,
-      default: true,
-    });
-    if (!proceed) {
-      console.log(`  ${COLORS.dim("Cancelled.")}`);
-      return;
+  // Remove platform symlinks + hooks
+  for (const platform of platformsToRemove) {
+    const ps = status.platforms.find((s) => s.platform.id === platform.id);
+    const platformPath = getPlatformSkillPath(platform, scope);
+
+    if (ps?.implicitlyLinked) {
+      // parent symlink → rm would delete canonical!
+      console.log(
+        `  ${ICONS.drift} ${COLORS.warn(`${platform.displayName}:`)} shared via parent symlink — skipping symlink removal`,
+      );
+      if (platform.supportsHooks) {
+        await uninstallPlatformHook(platform, scope);
+        console.log(
+          `  ${ICONS.ok} ${COLORS.success(`${platform.displayName}:`)} hook unregistered`,
+        );
+      }
+      continue;
+    }
+
+    await rm(platformPath, { force: true });
+    if (platform.supportsHooks) {
+      await uninstallPlatformHook(platform, scope);
+      console.log(
+        `  ${ICONS.ok} ${COLORS.success(`${platform.displayName}:`)} symlink removed, hook unregistered`,
+      );
+    } else {
+      console.log(
+        `  ${ICONS.ok} ${COLORS.success(`${platform.displayName}:`)} symlink removed`,
+      );
     }
   }
 
-  const spinner = startSpinner("Removing skill symlink...");
-  await rm(target);
-  spinner.succeed(`Skill symlink removed from ${scope} scope.`);
-
-  // Remove hook
-  const hookSpinner = startSpinner("Removing hook from settings.json...");
-  const removed = await uninstallHook(scope);
-  if (removed) {
-    hookSpinner.succeed("Hook removed from settings.json");
-  } else {
-    hookSpinner.info("No hook entry found in settings.json");
+  // Ask about canonical removal if all platforms removed
+  const remainingInstalled = installed.length - platformsToRemove.length;
+  if (remainingInstalled === 0 && hasCanonical) {
+    let removeCanonical = true;
+    if (isInteractive()) {
+      removeCanonical = await confirm({
+        message: "Also remove canonical (.agents/skills/knowpatch)?",
+        default: true,
+      });
+    }
+    if (removeCanonical) {
+      const canonicalPath = getAgentsSkillPath(scope);
+      await rm(canonicalPath, { recursive: true, force: true });
+      console.log(
+        `  ${ICONS.ok} ${COLORS.success("Canonical symlink removed")}`,
+      );
+    }
   }
+
+  console.log();
+  console.log("  Uninstalled.");
 }

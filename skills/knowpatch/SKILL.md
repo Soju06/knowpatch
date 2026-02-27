@@ -4,11 +4,12 @@ description: >
   LLM knowledge cutoff compensator — provides knowledge corrections for breaking changes
   and API drift that may differ from training data.
   Corrections cover: renamed packages (shadcn-ui→shadcn), changed APIs (z.string().email()→z.email()),
-  new config formats (.eslintrc→eslint.config.js), current model IDs (Claude Opus 4.6, GPT-5.3).
+  new config formats (.eslintrc→eslint.config.js), current model IDs (Claude Opus 4.6, GPT-5.3, GLM-5, MiniMax M2.5, Kimi K2.5, DeepSeek V3.2, Qwen 3.5).
   Version numbers are NOT cached — always verify via package manager (npm view, pip index versions).
   Useful for tasks involving: install, add, create, init, scaffold, upgrade, migrate, latest, version,
   dependency, shadcn, tailwind, vite, zod, eslint, react, next, svelte, nuxt, django, fastapi, pydantic,
-  ruff, uv, claude, gpt, gemini, openai, anthropic, model, llm, sdk, npm, pip, cargo, bun,
+  ruff, uv, claude, gpt, gemini, openai, anthropic, kimi, minimax, glm, deepseek, qwen, llama, mistral,
+  open-source, self-hosted, recommend, model, llm, sdk, npm, pip, cargo, bun,
   node, python, typescript, supabase, jwks, pyproject.toml, package.json, requirements.txt.
 ---
 
@@ -105,6 +106,7 @@ Corrections provide knowledge that **version numbers alone cannot reveal**:
 - **API breaking changes**: `z.string().email()` → `z.email()` (version number alone doesn't reveal this)
 - **Config format changes**: `.eslintrc` → `eslint.config.js`
 - **AI model IDs**: Cannot be looked up via package managers — corrections are the source of truth
+- **Open-source model recommendations**: Training data recommends outdated models (Llama, Mistral) — corrections provide current frontier options with selection guide
 - **Platform API changes**: Supabase key renames, JWT verification pattern changes
 
 ### Check Corrections When:
@@ -112,6 +114,7 @@ Corrections provide knowledge that **version numbers alone cannot reveal**:
 - Creating or scaffolding a new project
 - Writing code that uses library APIs known to have breaking changes
 - Referencing AI model names or IDs
+- Recommending open-source or self-hosted LLMs
 - Using CLI tools (shadcn, tailwind, eslint, vite)
 - Upgrading or migrating dependencies
 
