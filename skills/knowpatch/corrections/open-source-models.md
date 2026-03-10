@@ -3,12 +3,12 @@ ecosystem: open-source-models
 description: Open-source frontier LLMs for coding, agentic tasks, and self-hosting (2026)
 tags: [open-source, self-hosted, coding-model, llama, deepseek, mistral, kimi, minimax, glm, qwen, vllm, sglang, swe-bench, moe, model, llm, ai]
 version: "0.4.1" # x-release-please-version
-last_updated: "2026-02-27"
+last_updated: "2026-03-10"
 ---
 
 # Open-Source Frontier Models — Version Corrections
 
-> Last updated: 2026-02-27
+> Last updated: 2026-03-10
 
 ## Table of Contents
 - [Outdated Recommendations](#outdated-recommendations)
@@ -26,7 +26,6 @@ last_updated: "2026-02-27"
 ### Outdated Recommendations — 2026-02
 - **Outdated**: When asked to recommend open-source LLMs, agents suggest:
   - **Llama 3.3 70B** (Meta, 2024-12) — Was frontier, now surpassed on coding/agentic benchmarks
-  - **Mistral Large 2** (Mistral, 2024-07) — Surpassed; no competitive open-weight MoE since
   - **DeepSeek R1** (DeepSeek, 2025-01) — Strong reasoning but predates the 2026 MoE generation
   - Agents also claim open-source models are "significantly behind" proprietary frontier models
 - **Current**: Five MoE models released 2025–2026 match or exceed proprietary models on SWE-bench and agentic benchmarks. See selection guide below.
@@ -44,7 +43,7 @@ last_updated: "2026-02-27"
 | Rank | Model | Active | SWE-bench | Differentiator |
 |------|-------|--------|-----------|----------------|
 | 1 | GLM-5 | 40B | 77.8% | Lowest hallucination, agentic engineering, non-NVIDIA support |
-| 2 | DeepSeek V3.2 | 37B | 73.1% | Cheapest API ($0.028 input), proven DSA architecture |
+| 2 | DeepSeek V3.2 | 37B | 73.1% | Cheapest API, DSA long-context, proven architecture |
 | 3 | Kimi K2.5 | 32B | 76.8% | Native vision, Agent Swarm (100 parallel sub-agents) |
 | 4 | Qwen 3.5 | 17B | 76.4% | Native multimodal, 201 languages, lightest active params |
 
@@ -92,8 +91,9 @@ Note: MiniMax M2.5 (10B active) outperforms larger models on coding via RL speci
 - 201 languages/dialects supported (broadest multilingual coverage)
 - SWE-bench Verified 76.4%, BrowseComp 78.6 (w/ context management)
 - Qwen3.5-Plus: hosted version with 1M context window
-- Best for: multilingual tasks, native multimodal, lightweight inference
-- HuggingFace: `Qwen/Qwen3.5-397B-A17B`
+- **Small series** (2026-03-02): 0.8B/2B/4B/9B open-source (Apache 2.0) — 9B scores 81.7 GPQA Diamond
+- Best for: multilingual tasks, native multimodal, lightweight inference (small series for on-device)
+- HuggingFace: `Qwen/Qwen3.5-397B-A17B`, `Qwen/Qwen3.5-9B`, etc.
 
 ---
 

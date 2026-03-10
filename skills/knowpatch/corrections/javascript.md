@@ -3,17 +3,17 @@ ecosystem: javascript
 description: JS/TS library API changes
 tags: [zod, react, typescript, npm, bun, deno, pnpm, esm, types, javascript, js, ts]
 version: "0.4.1" # x-release-please-version
-last_updated: "2026-02-24"
+last_updated: "2026-03-10"
 ---
 
 # JavaScript/TypeScript — Version Corrections
 
-> Last updated: 2026-02-24
+> Last updated: 2026-03-10
 
 ## Table of Contents
 - [Zod 4](#zod-4)
 - [React 19](#react-19)
-- [TypeScript 5.9](#typescript-59)
+- [TypeScript 5.9 / 6.0](#typescript-59--60)
 
 ---
 
@@ -104,12 +104,13 @@ last_updated: "2026-02-24"
 
 ---
 
-### TypeScript 5.9 — 2025
+### TypeScript 5.9 / 6.0 — 2026-03
 - **Outdated**: TypeScript 5.3-5.5 is the latest
 - **Current**:
-  - TypeScript 5.9
+  - TypeScript 5.9.3 — Current stable
+  - **TypeScript 6.0 RC** (`6.0.1-rc`, 2026-03-06) — Stable release imminent
   - `moduleResolution: "bundler"` now the default
   - `satisfies` operator stabilized
   - `import type` auto-separation improved
-- **Impact**: Low (good backwards compatibility)
-- **Lookup**: `npm view typescript version`
+- **Impact**: TypeScript 6.0 is a major version — verify migration notes when stable. 5.9 code is expected to be mostly compatible.
+- **Lookup**: `npm view typescript version`, `npm view typescript@rc version`

@@ -3,12 +3,12 @@ ecosystem: macos
 description: macOS 26 version naming, Liquid Glass, Swift 6.2, system toolchain, Apple framework changes
 tags: [macos, tahoe, xcode, swift, swiftui, liquid-glass, metal, rosetta, intel, apple-silicon, foundation-models]
 version: "0.4.1" # x-release-please-version
-last_updated: "2026-02-27"
+last_updated: "2026-03-10"
 ---
 
 # macOS & Apple Platforms — Version Corrections
 
-> Last updated: 2026-02-27
+> Last updated: 2026-03-10
 
 ## Table of Contents
 - [macOS Version Naming](#macos-version-naming)
@@ -31,7 +31,7 @@ last_updated: "2026-02-27"
   - macOS 15 Sequoia → **macOS 26 Tahoe** (not 16)
   - Same scheme for iOS 26, iPadOS 26, watchOS 26, tvOS 26, visionOS 26
   - Internal Darwin version: 25.x
-  - Current release: macOS Tahoe 26.3 (as of 2026-02)
+  - Current release: macOS Tahoe 26.3.1 (2026-03-04), 26.4 in beta
 - **Impact**: Referencing "macOS 16" confuses users and produces incorrect deployment target values
 - **Lookup**: `sw_vers` (local), apple.com/macos
 
@@ -136,14 +136,15 @@ last_updated: "2026-02-27"
 - **Impact**: Using system Python/Ruby leads to missing security patches, incompatible packages, and broken tooling
 - **Lookup**: `python3 --version`, `ruby --version` (local). Use Homebrew/pyenv/rbenv for current versions
 
-### Xcode 26 & CLI Tools — 2025-06
+### Xcode 26 & CLI Tools — 2026-03
 - **Outdated**: Xcode 16 with Clang 16, older Git versions
 - **Current**:
   - Xcode 26 requires **macOS Sequoia 15.6+** to run
+  - **Xcode 26.3** (2026-02-26): Built-in AI coding agents — **Claude Agent + OpenAI Codex** integrated via MCP
   - Bundled: **Clang 17.0.0**, **Git 2.50.1**
-  - Compilation caching (opt-in) for faster iterative builds
+  - Compilation caching (opt-in) for faster iterative builds, 40% faster workspace loading
   - `#Playground` macro for interactive code exploration
   - Known: Clang auto-corrects deployment version `16.0` → `26.0` (harmless warning, GCC 15.2+ fixes upstream)
   - Enhanced async debugging in LLDB (async stepping, task context, named tasks)
-- **Impact**: GCC/Fortran formulas in Homebrew may show deployment version warnings. C++ code compiled with Xcode 26 may have minor regressions
+- **Impact**: Xcode 26.3 enables AI-assisted coding natively. GCC/Fortran formulas in Homebrew may show deployment version warnings.
 - **Lookup**: `xcodebuild -version`, `clang --version`, `git --version` (local)

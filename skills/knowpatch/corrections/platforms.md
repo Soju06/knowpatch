@@ -3,16 +3,17 @@ ecosystem: platforms
 description: BaaS/platform API key changes, auth patterns
 tags: [supabase, anon, service_role, publishable, secret, jwks, baas, firebase, platform]
 version: "0.4.1" # x-release-please-version
-last_updated: "2026-02-25"
+last_updated: "2026-03-10"
 ---
 
 # Platforms & BaaS — Version Corrections
 
-> Last updated: 2026-02-25
+> Last updated: 2026-03-10
 
 ## Table of Contents
 - [Supabase API Keys](#supabase-api-keys)
 - [Supabase JWKS JWT Verification](#supabase-jwks-jwt-verification)
+- [Supabase OpenAPI Schema Access](#supabase-openapi-schema-access)
 
 ---
 
@@ -89,3 +90,15 @@ const { payload } = await jwtVerify(token, jwks, {
 ```
 
 **Lookup**: `npm view jose version`, Supabase Dashboard → Settings → Auth → JWT Signing Keys
+
+---
+
+### Supabase OpenAPI Schema Access — 2026-03-11
+- **Outdated**: Use anon key to fetch OpenAPI schema at `/rest/v1/` for auto-generating types or API clients
+- **Current**:
+  - As of **2026-03-11**, the OpenAPI spec endpoint (`/rest/v1/`) **requires service role or secret API key**
+  - Anon key / publishable key can no longer access the schema endpoint
+  - Affects: PostgREST schema introspection, Supabase type generation, API client auto-gen
+  - Workaround: use `SUPABASE_SECRET_KEY` or service role key for schema fetching
+- **Impact**: Tools and agents that auto-fetch Supabase schema via anon key will silently fail or return 403
+- **Lookup**: Supabase Dashboard → Settings → API Keys

@@ -3,12 +3,12 @@ ecosystem: cli-tools
 description: CLI tool renames, command changes, major versions
 tags: [shadcn, tailwind, eslint, create-react-app, vite, webpack, prettier, cli]
 version: "0.4.1" # x-release-please-version
-last_updated: "2026-02-24"
+last_updated: "2026-03-10"
 ---
 
 # CLI Tools — Version Corrections
 
-> Last updated: 2026-02-24
+> Last updated: 2026-03-10
 
 ## Table of Contents
 - [shadcn (formerly shadcn-ui)](#shadcn)
@@ -19,14 +19,15 @@ last_updated: "2026-02-24"
 
 ---
 
-### shadcn — 2025-10
-- **Outdated**: Package name `shadcn-ui`, install command `npx shadcn-ui@latest init`
+### shadcn — 2026-03
+- **Outdated**: Package name `shadcn-ui`, install command `npx shadcn-ui@latest init`, shadcn 2.x/3.x
 - **Current**:
+  - **shadcn 4.0** (2026-03-06) — Major version bump
   - Package name: `shadcn`
   - Install: `npx shadcn@latest init`
   - The `shadcn-ui` package is discontinued — use `shadcn` package instead
   - shadcn dropped Tailwind CSS 3 support — **Tailwind 4 is required**
-- **Impact**: `npx shadcn-ui@latest` fails or installs a broken version. Using with Tailwind 3 causes incompatibility.
+- **Impact**: `npx shadcn-ui@latest` fails or installs a broken version. Using with Tailwind 3 causes incompatibility. shadcn 3.x is now outdated.
 - **Lookup**: `npm view shadcn version`
 
 ### Tailwind CSS v4 — 2025-03
