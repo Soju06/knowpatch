@@ -2,7 +2,7 @@
 ecosystem: frontier-models
 description: Proprietary frontier AI model names, IDs, SDK versions, multimodal support
 tags: [claude, gpt, gemini, openai, anthropic, model, llm, sdk, ai]
-version: "0.4.1" # x-release-please-version
+version: "0.4.2" # x-release-please-version
 last_updated: "2026-03-10"
 ---
 
