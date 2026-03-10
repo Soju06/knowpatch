@@ -3,12 +3,12 @@ ecosystem: frontier-models
 description: Proprietary frontier AI model names, IDs, SDK versions, multimodal support
 tags: [claude, gpt, gemini, openai, anthropic, model, llm, sdk, ai]
 version: "0.4.1" # x-release-please-version
-last_updated: "2026-02-27"
+last_updated: "2026-03-10"
 ---
 
 # Frontier (Proprietary) Models — Version Corrections
 
-> Last updated: 2026-02-27
+> Last updated: 2026-03-10
 
 ## Table of Contents
 - [Anthropic Claude](#anthropic-claude)
@@ -16,7 +16,7 @@ last_updated: "2026-02-27"
 - [Google Gemini 3 Family](#google-gemini-3-family)
 - [Multimodal Input Comparison](#multimodal-input-comparison)
 
-> Open-source models → see `open-source-models.md` (GLM-5, MiniMax M2.5, Kimi K2.5, DeepSeek V3.2, Qwen 3.5)
+> Open-source models → see `open-source-models.md` (GLM-5, MiniMax M2.5, Kimi K2.5, DeepSeek V4, Qwen 3.5)
 
 ---
 
@@ -31,27 +31,28 @@ last_updated: "2026-02-27"
 - **Impact**: Using legacy IDs like `claude-3-5-sonnet`, `claude-3-opus` results in deprecated or significantly degraded performance
 - **Lookup**: `npm view @anthropic-ai/sdk version`
 
-### OpenAI GPT-5 Family — 2026-02
+### OpenAI GPT-5 Family — 2026-03
 - **Outdated**: GPT-4 Turbo, GPT-4o are the latest/best models
 - **Current**:
+  - `gpt-5.4` — New flagship (2026-03-05), combines coding + reasoning, native computer-use, 1M ctx
+    - ChatGPT: GPT-5.4 Thinking / Pro
+    - API: `gpt-5.4`, `gpt-5.4-pro`
   - `gpt-5.3-codex` — Best agentic coding model (2026-02-05)
   - `gpt-5.3-codex-spark` — Ultra-fast real-time coding, Cerebras-powered (2026-02-12), text-only 128k
-  - `gpt-5.2` — Professional work (2025-12-11)
-    - ChatGPT: GPT-5.2 Instant / Thinking / Pro
-    - API: `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.2-pro`
-  - `gpt-5.2-codex` — Coding optimized
-  - `gpt-5.1` — Legacy (sunset planned in ChatGPT)
-  - `gpt-5` — Previous generation (still available via API, $1.25/$10 per 1M tokens)
-  - `gpt-5-mini`, `gpt-5-nano` — Small variants
+  - `gpt-5.3-chat-latest` — Everyday conversational (2026-03-03), replaces GPT-5.2 Instant
+  - `gpt-5.2` — Previous flagship (Instant deprecated 2026-06-03)
+    - API: `gpt-5.2`, `gpt-5.2-pro`
+  - `gpt-5.1` and below — Legacy
   - GPT-4 family (4o, 4-turbo, etc.) — Fully legacy
 - **Input**: Text, Image / **Output**: Text (Codex variants are text-only)
-- **Impact**: Using GPT-4 model IDs invokes legacy models with significantly degraded performance
+- **Impact**: Using GPT-4 or GPT-5.2 Instant model IDs invokes deprecated models
 - **Lookup**: `npm view openai version`
 
-### Google Gemini 3 Family — 2026-02
+### Google Gemini 3 Family — 2026-03
 - **Outdated**: Gemini 1.5 Pro is the latest
 - **Current**:
   - Gemini 3.1 Pro (Preview) — Highest capability, 1M input tokens, 64k output tokens
+  - Gemini 3.1 Flash-Lite (Preview) — Fastest/cheapest, $0.25/$1.50 per 1M tokens, 1M ctx, 64k output (2026-03-03)
   - Gemini 3 Pro — Stable version
   - Gemini 3 Flash — Fast variant
   - Gemini 2 family — Previous generation (still available)
@@ -61,23 +62,25 @@ last_updated: "2026-02-27"
 - **Impact**: Using Gemini 1.5 models results in legacy performance; failing to inform about video/audio input support
 - **Lookup**: `npm view @google/genai version`
 
-## Multimodal Input Comparison — 2026-02
+## Multimodal Input Comparison — 2026-03
 
 | Model | Text | Image | Video | Audio | PDF |
 |-------|------|-------|-------|-------|-----|
 | Claude Opus 4.6 | O | O | X | X | O |
 | Claude Sonnet 4.6 | O | O | X | X | O |
 | Claude Haiku 4.5 | O | O | X | X | O |
-| GPT-5.2 (Thinking/Pro) | O | O | X | X | - |
-| GPT-5.2 Instant | O | O | X | X | - |
+| GPT-5.4 (Thinking/Pro) | O | O | X | X | - |
 | GPT-5.3-Codex | O | X | X | X | X |
 | GPT-5.3-Codex-Spark | O | X | X | X | X |
+| GPT-5.3 Instant | O | O | X | X | - |
 | Gemini 3.1 Pro | O | O | O | O | O |
+| Gemini 3.1 Flash-Lite | O | O | O | O | O |
 | Gemini 3 Pro/Flash | O | O | O | O | O |
 | Kimi K2.5 | O | O | X | X | X |
 | MiniMax M2.5 | O | X | X | X | X |
 | GLM-5 | O | X | X | X | X |
+| DeepSeek V4 | O | O | O | X | X |
 | DeepSeek V3.2 | O | X | X | X | X |
 | Qwen 3.5 | O | O | X | X | X |
 
-Note: GPT-5.3-Codex, MiniMax M2.5, GLM-5, DeepSeek V3.2 are text-only. Kimi K2.5, Qwen 3.5 support native vision. Gemini is the only family supporting video + audio input.
+Note: GPT-5.3-Codex, MiniMax M2.5, GLM-5, DeepSeek V3.2 are text-only. DeepSeek V4 supports native multimodal (text, image, video). Kimi K2.5, Qwen 3.5 support native vision. Gemini is the only family supporting video + audio input.
