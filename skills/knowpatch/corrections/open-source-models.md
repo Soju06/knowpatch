@@ -26,7 +26,6 @@ last_updated: "2026-03-10"
 ### Outdated Recommendations — 2026-02
 - **Outdated**: When asked to recommend open-source LLMs, agents suggest:
   - **Llama 3.3 70B** (Meta, 2024-12) — Was frontier, now surpassed on coding/agentic benchmarks
-  - **Mistral Large 2** (Mistral, 2024-07) — Surpassed; no competitive open-weight MoE since
   - **DeepSeek R1** (DeepSeek, 2025-01) — Strong reasoning but predates the 2026 MoE generation
   - Agents also claim open-source models are "significantly behind" proprietary frontier models
 - **Current**: Six MoE models released 2025–2026 match or exceed proprietary models on SWE-bench and agentic benchmarks. See selection guide below.
