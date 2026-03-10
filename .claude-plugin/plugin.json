@@ -1,7 +1,7 @@
 {
   "name": "knowpatch",
   "description": "LLM knowledge cutoff compensator — corrects outdated versions and deprecated APIs",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "author": {
     "name": "Soju06"
   },

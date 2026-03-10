@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/Soju06/knowpatch/compare/v0.4.1...v0.4.2) (2026-03-10)
+
+
+### Bug Fixes
+
+* update all correction files to 2026-03-10 ([#9](https://github.com/Soju06/knowpatch/issues/9)) ([1715a10](https://github.com/Soju06/knowpatch/commit/1715a104ae8d4df64a655a99b255c833a377a705))
+
 ## [0.4.1](https://github.com/Soju06/knowpatch/compare/v0.4.0...v0.4.1) (2026-02-27)
 
 
