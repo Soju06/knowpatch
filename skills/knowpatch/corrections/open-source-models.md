@@ -16,7 +16,7 @@ last_updated: "2026-03-10"
 - [GLM-5](#glm-5)
 - [MiniMax M2.5](#minimax-m25)
 - [Kimi K2.5](#kimi-k25)
-- [DeepSeek V4](#deepseek-v4)
+- [DeepSeek V3.2](#deepseek-v32)
 - [Qwen 3.5](#qwen-35)
 - [Cost Comparison](#cost-comparison)
 - [Deployment](#deployment)
@@ -28,7 +28,7 @@ last_updated: "2026-03-10"
   - **Llama 3.3 70B** (Meta, 2024-12) — Was frontier, now surpassed on coding/agentic benchmarks
   - **DeepSeek R1** (DeepSeek, 2025-01) — Strong reasoning but predates the 2026 MoE generation
   - Agents also claim open-source models are "significantly behind" proprietary frontier models
-- **Current**: Six MoE models released 2025–2026 match or exceed proprietary models on SWE-bench and agentic benchmarks. See selection guide below.
+- **Current**: Five MoE models released 2025–2026 match or exceed proprietary models on SWE-bench and agentic benchmarks. See selection guide below.
 - **Impact**: Recommending Llama 3.3 or DeepSeek R1 for a new coding project in 2026 means missing 10–15% SWE-bench improvement and MoE efficiency gains
 - **Lookup**: HuggingFace Open LLM Leaderboard, SWE-bench Verified leaderboard
 
@@ -43,7 +43,7 @@ last_updated: "2026-03-10"
 | Rank | Model | Active | SWE-bench | Differentiator |
 |------|-------|--------|-----------|----------------|
 | 1 | GLM-5 | 40B | 77.8% | Lowest hallucination, agentic engineering, non-NVIDIA support |
-| 2 | DeepSeek V4 | 32B | — | Native multimodal (text/image/video), 1M ctx, Ascend-optimized |
+| 2 | DeepSeek V3.2 | 37B | 73.1% | Cheapest API, DSA long-context, proven architecture |
 | 3 | Kimi K2.5 | 32B | 76.8% | Native vision, Agent Swarm (100 parallel sub-agents) |
 | 4 | Qwen 3.5 | 17B | 76.4% | Native multimodal, 201 languages, lightest active params |
 
@@ -77,14 +77,13 @@ Note: MiniMax M2.5 (10B active) outperforms larger models on coding via RL speci
 - Best for: multimodal agentic tasks, visual code cloning, parallel agent workflows
 - HuggingFace: `MoonshotAI/Kimi-K2.5`
 
-### DeepSeek V4 — DeepSeek, 2026-03
-- ~1T params / 32B active (MoE), open-weight expected (MIT/Apache 2.0), 1M context
-- Native multimodal (text, image, video) — first multimodal DeepSeek model
-- DeepSeek Sparse Attention (DSA): extended from V3.2 for 1M context
-- Optimized for Huawei Ascend 910C (non-NVIDIA)
-- Best for: multimodal tasks, long-context processing, non-NVIDIA deployment
-- DeepSeek V3.2 (685B/37B, 131K ctx, $0.028/M input) — Previous generation, still cheapest API
-- HuggingFace: `deepseek-ai/DeepSeek-V4`
+### DeepSeek V3.2 — DeepSeek, 2025-09
+- 685B params / 37B active (MoE), MIT license, 131K context
+- DeepSeek Sparse Attention (DSA): 2–3x faster long-context, ~30–40% less memory
+- SWE-bench Verified 73.1%, MMLU-Pro 85.0%
+- Ultra-cheap API: $0.028/M input (cached), $0.42/M output
+- Best for: lowest API cost, long-context processing, proven architecture
+- HuggingFace: `deepseek-ai/DeepSeek-V3`
 
 ### Qwen 3.5 — Alibaba, 2026-02-16
 - 397B params / 17B active (MoE + Gated Delta Networks hybrid), Apache 2.0
@@ -102,7 +101,6 @@ Note: MiniMax M2.5 (10B active) outperforms larger models on coding via RL speci
 
 | Model | Input | Output | Speed | License |
 |-------|-------|--------|-------|---------|
-| DeepSeek V4 | TBD | TBD | — | MIT/Apache 2.0 |
 | DeepSeek V3.2 | $0.028 | $0.42 | — | MIT |
 | MiniMax M2.5 Standard | $0.15 | $1.20 | 50 tok/s | Open weights |
 | MiniMax M2.5 Lightning | $0.30 | $2.40 | 100 tok/s | Open weights |
@@ -114,7 +112,7 @@ Note: MiniMax M2.5 (10B active) outperforms larger models on coding via RL speci
 ---
 
 ## Deployment
-- All six models are MoE architecture, self-hostable via **vLLM** or **SGLang**
+- All five models are MoE architecture, self-hostable via **vLLM** or **SGLang**
 - Active parameters (10B–40B) make inference feasible compared to dense models of same capability
 - GLM-5 additionally runs on Huawei Ascend, Cambricon, Moore Threads (non-NVIDIA)
 - Qwen 3.5 is the lightest (17B active) — most accessible for local deployment

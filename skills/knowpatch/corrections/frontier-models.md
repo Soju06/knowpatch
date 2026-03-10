@@ -16,7 +16,7 @@ last_updated: "2026-03-10"
 - [Google Gemini 3 Family](#google-gemini-3-family)
 - [Multimodal Input Comparison](#multimodal-input-comparison)
 
-> Open-source models → see `open-source-models.md` (GLM-5, MiniMax M2.5, Kimi K2.5, DeepSeek V4, Qwen 3.5)
+> Open-source models → see `open-source-models.md` (GLM-5, MiniMax M2.5, Kimi K2.5, DeepSeek V3.2, Qwen 3.5)
 
 ---
 
@@ -79,8 +79,7 @@ last_updated: "2026-03-10"
 | Kimi K2.5 | O | O | X | X | X |
 | MiniMax M2.5 | O | X | X | X | X |
 | GLM-5 | O | X | X | X | X |
-| DeepSeek V4 | O | O | O | X | X |
 | DeepSeek V3.2 | O | X | X | X | X |
 | Qwen 3.5 | O | O | X | X | X |
 
-Note: GPT-5.3-Codex, MiniMax M2.5, GLM-5, DeepSeek V3.2 are text-only. DeepSeek V4 supports native multimodal (text, image, video). Kimi K2.5, Qwen 3.5 support native vision. Gemini is the only family supporting video + audio input.
+Note: GPT-5.3-Codex, MiniMax M2.5, GLM-5, DeepSeek V3.2 are text-only. Kimi K2.5, Qwen 3.5 support native vision. Gemini is the only family supporting video + audio input.
